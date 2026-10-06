@@ -1,0 +1,191 @@
+[
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184471947544100.png",
+    "target": "/assets/images/hero-sanitaryware.webp",
+    "cropCell": null,
+    "width": 1312,
+    "height": 1199,
+    "bytes": 215884,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184471947544100.png",
+    "target": "/assets/images/hero-sanitaryware.png",
+    "cropCell": null,
+    "width": 1312,
+    "height": 1199,
+    "bytes": 2346770,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184509852999400.png",
+    "target": "/assets/images/hero-basin-concept.webp",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 151294,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184509852999400.png",
+    "target": "/assets/images/hero-basin-concept.png",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1977883,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184542423023200.png",
+    "target": "/assets/images/hero-faucet-concept.webp",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 161934,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184542423023200.png",
+    "target": "/assets/images/hero-faucet-concept.png",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 2053499,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184712843676000.png",
+    "target": "/assets/images/detail-materials.webp",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 87634,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184712843676000.png",
+    "target": "/assets/images/detail-materials.png",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1558172,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-hospitality.webp",
+    "cropCell": 0,
+    "width": 488,
+    "height": 488,
+    "bytes": 33196,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-commercial.webp",
+    "cropCell": 1,
+    "width": 488,
+    "height": 488,
+    "bytes": 36278,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-residential.webp",
+    "cropCell": 2,
+    "width": 488,
+    "height": 488,
+    "bytes": 33566,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-workplace.webp",
+    "cropCell": 3,
+    "width": 488,
+    "height": 488,
+    "bytes": 27988,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-resort-spa.webp",
+    "cropCell": 4,
+    "width": 488,
+    "height": 488,
+    "bytes": 60426,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png",
+    "target": "/uploads/cases/concept-serviced-apartment.webp",
+    "cropCell": 5,
+    "width": 488,
+    "height": 488,
+    "bytes": 32418,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/cases/concept-campus.webp",
+    "cropCell": 0,
+    "width": 488,
+    "height": 488,
+    "bytes": 25990,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/cases/concept-wellness-club.webp",
+    "cropCell": 1,
+    "width": 488,
+    "height": 488,
+    "bytes": 23826,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/cases/concept-compact-home.webp",
+    "cropCell": 2,
+    "width": 488,
+    "height": 488,
+    "bytes": 27044,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/cases/concept-family-bathroom.webp",
+    "cropCell": 3,
+    "width": 488,
+    "height": 488,
+    "bytes": 31638,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/about/company-profile-showroom.webp",
+    "cropCell": 4,
+    "width": 488,
+    "height": 488,
+    "bytes": 28900,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png",
+    "target": "/uploads/about/company-profile-sourcing.webp",
+    "cropCell": 5,
+    "width": 488,
+    "height": 488,
+    "bytes": 39014,
+    "illustrative": true
+  },
+  {
+    "source": "C:/Users/2026/.codex/output/imagegen/mcp-1791184712843676000.png",
+    "target": "/uploads/about/company-profile-details.webp",
+    "cropCell": null,
+    "width": 1536,
+    "height": 1024,
+    "bytes": 87634,
+    "illustrative": true
+  }
+]

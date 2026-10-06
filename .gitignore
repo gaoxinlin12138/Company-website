@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Nuxt generated files
+.nuxt/
+.output/
+.data/
+.nitro/
+.cache/
+dist/
+
+# Local development environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.review/
+--host/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and local configuration
+*.log
+.env
+.env.*
+!.env.example
+
+# Internal backups and design-tool metadata
+.design-backups/
+.impeccable/

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "shower",
+    "prompt": "Photorealistic architectural product photograph for a Chinese bathroom and hardware supplier website. This is a clean photographic asset, NOT a website mockup: no text, logos, captions, watermark or UI. Airy porcelain white and very pale sea-glass green stone, soft natural daylight, precise realistic plumbing hardware, refined quiet premium showroom mood. Neutral whites, gentle sage reflections. Product finishes MUST remain physically natural: silver chrome, brushed stainless steel, matte black and white ceramic; NO copper, brass, rose gold or gold surfaces. Not an actual delivered project, conceptual scene. Wide view of a beautifully proportioned matte black rainfall shower set, black hand shower and mixer mounted on pale green stone wall, white ceramic bathtub edge and clear glass shower screen. The complete shower system is visible on the centre-right with room around the silhouette. Subtle plant shadow, pale porcelain tiled floor. Eye-level architectural photograph, bright and naturally lit.",
+    "size": "1536x1024",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184471947544100.png"
+  },
+  {
+    "name": "basin",
+    "prompt": "Photorealistic architectural product photograph for a Chinese bathroom and hardware supplier website. This is a clean photographic asset, NOT a website mockup: no text, logos, captions, watermark or UI. Airy porcelain white and very pale sea-glass green stone, soft natural daylight, precise realistic plumbing hardware, refined quiet premium showroom mood. Neutral whites, gentle sage reflections. Product finishes MUST remain physically natural: silver chrome, brushed stainless steel, matte black and white ceramic; NO copper, brass, rose gold or gold surfaces. Not an actual delivered project, conceptual scene. Wide close architectural view of an elegant polished CHROME single-lever basin faucet and pure white oval porcelain vessel basin, on light silver-white stone countertop. Large vertical pale jade stone wall and soft daylight from window left, minimal green branch and folded white linen. Faucet body and spout fully visible with correct lever and outlet geometry. Basin and faucet occupy centre-right; inviting light-filled space.",
+    "size": "1536x1024",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184509852999400.png"
+  },
+  {
+    "name": "kitchen",
+    "prompt": "Photorealistic architectural product photograph for a Chinese bathroom and hardware supplier website. This is a clean photographic asset, NOT a website mockup: no text, logos, captions, watermark or UI. Airy porcelain white and very pale sea-glass green stone, soft natural daylight, precise realistic plumbing hardware, refined quiet premium showroom mood. Neutral whites, gentle sage reflections. Product finishes MUST remain physically natural: silver chrome, brushed stainless steel, matte black and white ceramic; NO copper, brass, rose gold or gold surfaces. Not an actual delivered project, conceptual scene. Wide architectural photograph of a brushed STAINLESS STEEL gooseneck kitchen faucet with integrated pull-out head above a pale stone sink, porcelain-white counter and very pale sage backsplash. Small greenery, soft morning daylight, beautifully restrained details. Faucet and sink centred and fully visible with natural steel silver reflections.",
+    "size": "1536x1024",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184542423023200.png"
+  },
+  {
+    "name": "materials",
+    "size": "1536x1024",
+    "prompt": "Premium photographic still life of sanitaryware components: polished chrome faucet cartridge housing, brushed stainless steel valve, silver braided flexible hose and small white ceramic sample, neatly arranged on porcelain-white stone with pale sea-glass green background. Realistic technically plausible metal parts, soft daylight and gentle shadows, bright clean commercial editorial photograph, no gold brass copper warm metals, no text logos watermark or UI. Landscape image, objects around centre-right, airy negative space.",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184712843676000.png"
+  },
+  {
+    "name": "cases-a",
+    "size": "3072x2048",
+    "prompt": "Create one precisely aligned 3 columns by 2 rows photographic contact sheet, six different independent architectural bathroom photographs, equal rectangular cells, edge-to-edge without gutters borders text captions logos or UI. Every cell is a complete wide landscape photograph with complete fixtures, not spanning across cells. Consistent bright porcelain-white and very pale sea-glass green stone interiors, soft daylight, premium realistic architectural photography. Hardware finishes ONLY chrome silver, stainless steel or matte black, white ceramic. Absolutely NO copper brass gold. Cells in reading order: 1 luxury hotel bathroom with white freestanding bath and black shower; 2 commercial public washroom with three white basins and chrome taps; 3 residential bathroom with white vanity and chrome fittings; 4 office restroom with two basins and black taps; 5 tranquil resort spa with white bath and pale sage stone; 6 compact serviced apartment bathroom with white basin and chrome shower. Architectural concept imagery, not real project documentation.",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184743271230300.png"
+  },
+  {
+    "name": "cases-b",
+    "size": "3072x2048",
+    "prompt": "Create one precisely aligned 3 columns by 2 rows photographic contact sheet, six different independent architectural photographs, equal rectangular cells, edge-to-edge without gutters borders text captions logos or UI. Each cell complete wide landscape photo not spanning across cells. Bright porcelain-white and very pale sea-glass green interiors, soft daylight, premium realistic architectural photography. Hardware finishes ONLY chrome silver stainless steel or matte black, white ceramic. NO copper brass gold. Reading order cells: 1 campus washroom with accessible white basins and chrome taps; 2 premium wellness club changing room wash area white sinks pale sage wall; 3 small apartment bathroom with white vanity black tap; 4 family bathroom double white basins chrome faucets and white bathtub; 5 airy bathroom products showroom with white basins chrome faucets and black shower displays in porcelain and pale green alcoves; 6 sanitaryware selection studio with sample chrome faucets black fittings and white ceramic material samples on large white table, no people. Architectural concept images, not actual company premises or project documentation.",
+    "path": "C:/Users/2026/.codex/output/imagegen/mcp-1791184807100226600.png"
+  }
+]

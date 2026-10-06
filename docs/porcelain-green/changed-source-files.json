@@ -1,0 +1,19 @@
+[
+  "assets\\css\\home.css",
+  "assets\\css\\pearl-blue.css",
+  "assets\\css\\site.css",
+  "components\\AdminEditor.vue",
+  "components\\AdminProductCatalogueEditor.vue",
+  "components\\AdminResourceList.vue",
+  "components\\AdminSettingsEditor.vue",
+  "components\\AdminSocialContactEditor.vue",
+  "components\\HomeContactDock.vue",
+  "components\\HomeProductOrbit.vue",
+  "pages\\cases.vue",
+  "pages\\admin\\cases.vue",
+  "pages\\admin\\home.vue",
+  "pages\\admin\\inquiries.vue",
+  "pages\\admin\\login.vue",
+  "layouts\\admin.vue",
+  "nuxt.config.ts"
+]

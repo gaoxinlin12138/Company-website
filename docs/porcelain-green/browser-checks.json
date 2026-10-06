@@ -1,0 +1,98 @@
+[
+  {
+    "route": "products",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "产品中心｜红财万富",
+    "width": 1280
+  },
+  {
+    "route": "about",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "关于我们｜红财万富",
+    "width": 1280
+  },
+  {
+    "route": "news",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "新闻动态｜红财万富",
+    "width": 1280
+  },
+  {
+    "route": "cases",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "案例展示｜红财万富",
+    "width": 1280
+  },
+  {
+    "route": "contact",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "联系我们｜红财万富",
+    "width": 1280
+  },
+  {
+    "route": "admin",
+    "background": "rgb(246, 248, 245)",
+    "imagesMissing": [],
+    "scrollWidth": 1265,
+    "title": "首页内容｜管理后台",
+    "width": 1280
+  },
+  {
+    "route": "products",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "产品中心｜红财万富",
+    "width": 390
+  },
+  {
+    "route": "about",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "关于我们｜红财万富",
+    "width": 390
+  },
+  {
+    "route": "news",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "新闻动态｜红财万富",
+    "width": 390
+  },
+  {
+    "route": "cases",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "案例展示｜红财万富",
+    "width": 390
+  },
+  {
+    "route": "contact",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "联系我们｜红财万富",
+    "width": 390
+  },
+  {
+    "route": "admin",
+    "device": "mobile",
+    "imagesMissing": [],
+    "scrollWidth": 375,
+    "title": "首页内容｜管理后台",
+    "width": 390
+  }
+]

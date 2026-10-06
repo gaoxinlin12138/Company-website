@@ -1,0 +1,3 @@
+import { getMysqlPool } from '~/server/utils/mysql'
+import { requireAdmin } from '~/server/utils/admin-auth'
+export default defineEventHandler(async (event) => { requireAdmin(event); const id = getRouterParam(event, 'id') || ''; const [rows] = await getMysqlPool().query('SELECT id, name_zh AS nameZh, name_en AS nameEn, slug, category_id AS categoryId, model, material_zh AS materialZh, material_en AS materialEn, summary_zh AS summaryZh, summary_en AS summaryEn, cover_image AS coverImage, status, sort_order AS sortOrder FROM products WHERE id = ?', [id]) as any; if (!rows[0]) throw createError({ statusCode: 404, statusMessage: 'Product not found' }); return rows[0] })

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 80" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Two restrained ink washes frame the navigation while the centre stays quiet. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-22 59 C52 46 95 62 158 50 C229 36 276 25 342 35 C397 44 432 26 487 22" stroke="#17343a" stroke-width="4.2" opacity=".30"/>
+    <path d="M-8 67 C62 52 108 70 174 57 C237 45 287 33 351 42 C403 49 436 37 476 34" stroke="#37675d" stroke-width="10" opacity=".09"/>
+    <path d="M22 38 C87 25 133 42 194 32 C252 22 300 13 359 21 C407 28 445 17 480 14" stroke="#5f8979" stroke-width="2.3" opacity=".28"/>
+    <path d="M98 61 C148 51 176 57 222 49 C270 41 298 44 338 37 C381 30 414 30 448 31" stroke="#17343a" stroke-width="1.15" opacity=".36"/>
+    <path d="M487 22 C645 5 790 31 930 45 C1010 53 1062 65 1113 62" stroke="#17343a" stroke-width="4.2" opacity=".16"/>
+    <path d="M448 31 C650 15 815 40 972 49 C1043 53 1094 54 1152 53" stroke="#17343a" stroke-width="1.15" opacity=".20"/>
+    <path d="M486 22 C503 7 527 7 543 21 C559 35 582 36 601 22" stroke="#37675d" stroke-width="2" opacity=".22"/>
+    <path d="M999 45 C1017 30 1040 31 1056 45 C1072 59 1096 60 1114 47" stroke="#37675d" stroke-width="2" opacity=".22"/>
+    <path d="M520 12 C566 4 612 8 654 13 M946 13 C988 8 1035 4 1080 12" stroke="#88a797" stroke-width="1.2" opacity=".30"/>
+
+    <path d="M1622 25 C1548 38 1505 22 1442 34 C1371 48 1324 59 1258 49 C1203 40 1168 58 1113 62" stroke="#17343a" stroke-width="4.2" opacity=".30"/>
+    <path d="M1608 17 C1538 31 1492 14 1426 27 C1363 39 1312 51 1249 41 C1197 33 1162 44 1124 47" stroke="#37675d" stroke-width="10" opacity=".09"/>
+    <path d="M1578 45 C1513 57 1467 40 1406 51 C1348 62 1300 69 1241 61 C1193 54 1155 63 1120 67" stroke="#5f8979" stroke-width="2.3" opacity=".28"/>
+    <path d="M1502 27 C1452 20 1424 27 1378 35 C1330 43 1302 39 1262 46 C1219 53 1186 53 1152 53" stroke="#17343a" stroke-width="1.15" opacity=".36"/>
+  </g>
+
+  <!-- Continuous ink lines stay readable; a few deliberate splashes keep it handmade. -->
+  <g fill="#17343a" opacity=".24">
+    <path d="M56 53 C68 48 82 49 91 53 C82 58 68 59 56 57 C51 56 51 54 56 53Z"/>
+    <path d="M178 28 C188 24 198 25 203 29 C195 33 184 33 177 31 C174 30 175 29 178 28Z"/>
+    <path d="M1516 30 C1504 27 1493 29 1488 33 C1497 37 1508 37 1516 34 C1519 33 1519 31 1516 30Z"/>
+    <path d="M1390 54 C1380 50 1370 51 1365 55 C1373 59 1384 59 1391 57 C1394 56 1393 55 1390 54Z"/>
+  </g>
+  <g fill="#37675d" opacity=".32">
+    <circle cx="116" cy="45" r="2.2"/><circle cx="139" cy="39" r="1.1"/><circle cx="154" cy="60" r="1.7"/>
+    <circle cx="205" cy="25" r="1.2"/><circle cx="1478" cy="36" r="2.2"/><circle cx="1456" cy="43" r="1.1"/>
+    <circle cx="1439" cy="23" r="1.7"/><circle cx="1390" cy="57" r="1.2"/>
+  </g>
+</svg>
+
+
+
