@@ -6,6 +6,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || 'mysql://root@127.0.0.1:3306/hongcai_wanfu',
     sessionSecret: process.env.NUXT_SESSION_SECRET || '',
+    adminUsername: process.env.ADMIN_USERNAME || '',
+    adminPassword: process.env.ADMIN_PASSWORD || '',
     baiduTranslateAppId: process.env.BAIDU_TRANSLATE_APP_ID || '',
     baiduTranslateSecretKey: process.env.BAIDU_TRANSLATE_SECRET_KEY || '',
     public: {

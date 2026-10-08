@@ -7,9 +7,9 @@
 | 主文字 | --ink | #17343A |
 | 次级文字 | --ink-soft | #35564E |
 | 页面底色 | --paper / --surface-soft | #F6F8F5 |
-| 内容面 | --white / --surface | #FFFFFF |
-| 浅青绿分区 | --mist / --sea-glass / --surface-green | #E5F0EB |
-| 主操作 | --red / --accent | #37675D |
+| 内容面 | --white | #FFFFFF |
+| 浅青绿分区 | --mist / --surface-green | #E5F0EB |
+| 主操作 | --red | #37675D |
 | 主操作悬停 | --red-deep | #285147 |
 | 浅色选中 | --accent-soft | #DFEDE5 |
 | 辅助细节 | --steel | #849E94 |

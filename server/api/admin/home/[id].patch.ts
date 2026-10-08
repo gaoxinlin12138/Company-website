@@ -1,7 +1,9 @@
 import { getMysqlPool } from '~/server/utils/mysql'
 import { requireAdmin } from '~/server/utils/admin-auth'
 
-const text = (input: Record<string, unknown>, key: string) => typeof input[key] === 'string' ? String(input[key]).trim() : ''
+import { readRawText } from '~/server/utils/input'
+
+const text = (input: Record<string, unknown>, key: string) => readRawText(input, key)
 
 function splitTitle(value: string) {
   const parts = value.trim().split(/\s+/).filter(Boolean)

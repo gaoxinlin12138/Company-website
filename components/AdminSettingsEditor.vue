@@ -242,42 +242,15 @@ watch([loading, () => route.hash], scrollToManagedSection, { immediate: true })
               <label>中文导语<input v-model="form.companyProfile.introZh"></label>
               <label>English intro<input v-model="form.companyProfile.introEn"></label>
             </div>
-            <div class="settings-repeat settings-profile-flow">
-              <div class="settings-repeat__head settings-profile-flow__head">
-                <div><strong>图文内容编排</strong><span>使用上移、下移调整文字和图片在前台出现的位置。</span></div>
-                <div class="settings-profile-flow__add">
-                  <button type="button" class="settings-add" @click="addContentBlock('companyProfile', 'text')"><Icon name="lucide:file-text" />添加文字</button>
-                  <button type="button" class="settings-add" @click="addContentBlock('companyProfile', 'image')"><Icon name="lucide:image-plus" />添加图片</button>
-                </div>
-              </div>
-              <p v-if="!form.companyProfile.contentBlocks.length" class="settings-profile-flow__empty">还没有内容，请先添加文字或图片。</p>
-              <article v-for="(block, index) in form.companyProfile.contentBlocks" :key="block.id" class="settings-profile-block">
-                <div class="settings-repeat__item-head settings-profile-block__head">
-                  <strong><Icon :name="block.type === 'text' ? 'lucide:file-text' : 'lucide:image'" />{{ block.type === 'text' ? '文字段落' : '图片' }} {{ Number(index) + 1 }}</strong>
-                  <div class="settings-profile-block__actions">
-                    <button type="button" class="settings-order" :disabled="Number(index) === 0" :aria-label="`上移第 ${Number(index) + 1} 项`" title="上移" @click="moveContentBlock('companyProfile', Number(index), -1)"><Icon name="lucide:arrow-up" /></button>
-                    <button type="button" class="settings-order" :disabled="Number(index) === form.companyProfile.contentBlocks.length - 1" :aria-label="`下移第 ${Number(index) + 1} 项`" title="下移" @click="moveContentBlock('companyProfile', Number(index), 1)"><Icon name="lucide:arrow-down" /></button>
-                    <button type="button" class="settings-remove" @click="removeContentBlock('companyProfile', Number(index))">移除</button>
-                  </div>
-                </div>
-                <div v-if="block.type === 'text'" class="settings-grid">
-                  <label>中文正文<textarea v-model="block.bodyZh" rows="5" placeholder="输入一个或多个自然段"></textarea></label>
-                  <label>English copy<textarea v-model="block.bodyEn" rows="5" placeholder="English content for this block"></textarea></label>
-                </div>
-                <div v-else class="settings-grid">
-                  <div class="settings-span settings-content-image">
-                    <label v-if="!block.image">上传图片<input type="file" accept="image/jpeg,image/png,image/webp" @change="uploadFile($event, { object: block, key: 'image' })"><small class="settings-field-help">推荐 1600×1000（约 8:5 横图）；支持 JPG、PNG、WebP，单张不超过 5MB。</small></label>
-                    <figure v-if="block.image" class="settings-content-image__preview">
-                      <button type="button" class="settings-content-image__remove" aria-label="删除当前图片并重新选择" title="删除并更换图片" @click="removeContentBlockImage(block)"><Icon name="lucide:x" /></button>
-                      <img :src="block.image" :alt="block.altZh || '公司简介图片预览'">
-                      <figcaption>当前图片预览；点击右上角叉号可删除并重新选择。</figcaption>
-                    </figure>
-                  </div>
-                  <label>中文替代文本<input v-model="block.altZh" placeholder="简要描述图片内容"></label>
-                  <label>English alt text<input v-model="block.altEn" placeholder="Describe the image"></label>
-                </div>
-              </article>
-            </div>
+            <AdminProfileFlowEditor
+              :blocks="form.companyProfile.contentBlocks"
+              preview-alt="公司简介图片预览"
+              @add="addContentBlock('companyProfile', $event)"
+              @move="(index, offset) => moveContentBlock('companyProfile', index, offset)"
+              @remove="removeContentBlock('companyProfile', $event)"
+              @remove-image="removeContentBlockImage"
+              @upload="(payload) => uploadFile(payload[0], { object: payload[1], key: 'image' })"
+            />
           </section>
           <section v-if="!props.section || props.section === 'brand-culture'" class="settings-section">
             <div class="settings-section__intro">
@@ -290,42 +263,15 @@ watch([loading, () => route.hash], scrollToManagedSection, { immediate: true })
               <label>中文导语<input v-model="form.brandCulture.introZh"></label>
               <label>English intro<input v-model="form.brandCulture.introEn"></label>
             </div>
-            <div class="settings-repeat settings-profile-flow">
-              <div class="settings-repeat__head settings-profile-flow__head">
-                <div><strong>图文内容编排</strong><span>使用上移、下移调整文字和图片在前台出现的位置。</span></div>
-                <div class="settings-profile-flow__add">
-                  <button type="button" class="settings-add" @click="addContentBlock('brandCulture', 'text')"><Icon name="lucide:file-text" />添加文字</button>
-                  <button type="button" class="settings-add" @click="addContentBlock('brandCulture', 'image')"><Icon name="lucide:image-plus" />添加图片</button>
-                </div>
-              </div>
-              <p v-if="!form.brandCulture.contentBlocks.length" class="settings-profile-flow__empty">还没有内容，请先添加文字或图片。</p>
-              <article v-for="(block, index) in form.brandCulture.contentBlocks" :key="block.id" class="settings-profile-block">
-                <div class="settings-repeat__item-head settings-profile-block__head">
-                  <strong><Icon :name="block.type === 'text' ? 'lucide:file-text' : 'lucide:image'" />{{ block.type === 'text' ? '文字段落' : '图片' }} {{ Number(index) + 1 }}</strong>
-                  <div class="settings-profile-block__actions">
-                    <button type="button" class="settings-order" :disabled="Number(index) === 0" :aria-label="`上移第 ${Number(index) + 1} 项`" title="上移" @click="moveContentBlock('brandCulture', Number(index), -1)"><Icon name="lucide:arrow-up" /></button>
-                    <button type="button" class="settings-order" :disabled="Number(index) === form.brandCulture.contentBlocks.length - 1" :aria-label="`下移第 ${Number(index) + 1} 项`" title="下移" @click="moveContentBlock('brandCulture', Number(index), 1)"><Icon name="lucide:arrow-down" /></button>
-                    <button type="button" class="settings-remove" @click="removeContentBlock('brandCulture', Number(index))">移除</button>
-                  </div>
-                </div>
-                <div v-if="block.type === 'text'" class="settings-grid">
-                  <label>中文正文<textarea v-model="block.bodyZh" rows="5" placeholder="输入一个或多个自然段"></textarea></label>
-                  <label>English copy<textarea v-model="block.bodyEn" rows="5" placeholder="English content for this block"></textarea></label>
-                </div>
-                <div v-else class="settings-grid">
-                  <div class="settings-span settings-content-image">
-                    <label v-if="!block.image">上传图片<input type="file" accept="image/jpeg,image/png,image/webp" @change="uploadFile($event, { object: block, key: 'image' })"><small class="settings-field-help">推荐 1600×1000（约 8:5 横图）；支持 JPG、PNG、WebP，单张不超过 5MB。</small></label>
-                    <figure v-if="block.image" class="settings-content-image__preview">
-                      <button type="button" class="settings-content-image__remove" aria-label="删除当前图片并重新选择" title="删除并更换图片" @click="removeContentBlockImage(block)"><Icon name="lucide:x" /></button>
-                      <img :src="block.image" :alt="block.altZh || '品牌文化图片预览'">
-                      <figcaption>当前图片预览；点击右上角叉号可删除并重新选择。</figcaption>
-                    </figure>
-                  </div>
-                  <label>中文替代文本<input v-model="block.altZh" placeholder="简要描述图片内容"></label>
-                  <label>English alt text<input v-model="block.altEn" placeholder="Describe the image"></label>
-                </div>
-              </article>
-            </div>
+            <AdminProfileFlowEditor
+              :blocks="form.brandCulture.contentBlocks"
+              preview-alt="品牌文化图片预览"
+              @add="addContentBlock('brandCulture', $event)"
+              @move="(index, offset) => moveContentBlock('brandCulture', index, offset)"
+              @remove="removeContentBlock('brandCulture', $event)"
+              @remove-image="removeContentBlockImage"
+              @upload="(payload) => uploadFile(payload[0], { object: payload[1], key: 'image' })"
+            />
             <div class="settings-repeat settings-culture-principles">
               <div class="settings-repeat__head"><strong>品牌原则</strong></div>
               <article v-for="(item, index) in form.brandCulture.principles" :key="`${item.icon}-${index}`" class="settings-culture-principle">
@@ -432,7 +378,7 @@ watch([loading, () => route.hash], scrollToManagedSection, { immediate: true })
   </div>
 </template>
 
-<style scoped>
+<style>
 .admin-settings{min-height:100vh;background:#f3f7f4;color:#17343a}.admin-settings__head{display:flex;align-items:end;justify-content:space-between;gap:2rem;padding:2rem clamp(1.25rem,5vw,5rem);background:#17343a;color:#fff}.admin-settings__eyebrow{margin:0 0 .45rem;color:#37675d;font-size:.65rem;font-weight:800;letter-spacing:.16em}.admin-settings__head h1{margin:0;font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:600}.admin-settings__head span{display:block;margin-top:.45rem;color:rgba(255,255,255,.72);font-size:.76rem}.admin-settings__view{display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.35);padding:.55rem .75rem;color:#fff;font-size:.72rem}.admin-settings__view svg{width:14px}.admin-settings__content{width:min(1200px,calc(100% - 2.5rem));margin:auto;padding:2rem 0 4rem}.admin-settings__alert,.admin-settings__success{margin:0 0 1rem;padding:.7rem .85rem;font-size:.76rem}.admin-settings__alert{background:#f9e9e7;color:#285147}.admin-settings__success{background:#e4f0ea;color:#326b57}.admin-settings__form{display:grid;gap:1rem}.settings-section{padding:1.35rem;background:#ffffff;border:1px solid rgba(23,52,58,.1)}.settings-section__intro{display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}.settings-section__intro h2{margin:0;font-size:1rem}.settings-section__intro p{margin:.35rem 0 0;color:#526d65;font-size:.72rem}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}.settings-grid label{display:grid;gap:.35rem;color:#526d65;font-size:.72rem;font-weight:700}.settings-grid input,.settings-grid textarea{width:100%;border:1px solid rgba(23,52,58,.16);border-radius:10px;padding:.65rem .7rem;background:#fff;color:#17343a;font:inherit;font-size:.78rem;font-weight:400}.settings-grid textarea{resize:vertical;line-height:1.55}.settings-grid input:focus,.settings-grid textarea:focus{outline:2px solid rgba(55,103,93,.25);border-color:#37675d}.settings-span{grid-column:1/-1}.settings-repeat{display:grid;gap:.8rem;margin-top:1rem}.settings-repeat__head,.settings-repeat__item-head{display:flex;align-items:center;justify-content:space-between;gap:.8rem}.settings-repeat__head{padding:.15rem 0 .25rem}.settings-repeat__item-head{margin-bottom:.75rem}.settings-repeat article{padding:1rem;background:#f3f7f4;border:1px solid rgba(12,28,35,.08)}.settings-repeat article>strong{display:block;margin-bottom:.75rem;font-size:.78rem}.settings-add,.settings-remove{display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(23,52,58,.18);padding:.45rem .6rem;background:#ffffff;color:#17343a;font-size:.68rem;font-weight:800;cursor:pointer}.settings-add{border-color:#37675d;color:#285147}.settings-add svg{width:13px}.settings-remove{color:#285147}.settings-media-preview{display:block;width:min(100%,220px);height:150px;margin-top:.25rem;object-fit:contain;border:1px solid rgba(23,52,58,.12);background:#fff}.settings-colours{display:grid;gap:.55rem;margin-top:1rem}.settings-colours article{display:grid;grid-template-columns:1fr 1fr 150px 34px;gap:.5rem;align-items:center}.settings-colours input{border:1px solid rgba(23,52,58,.16);border-radius:10px;padding:.55rem;background:#fff;font-size:.75rem}.settings-colours i{width:30px;height:30px;border:1px solid rgba(23,52,58,.15)}.settings-actions{display:flex;justify-content:flex-end;gap:.7rem}.settings-actions button{border:1px solid #37675d;padding:.65rem 1rem;background:#37675d;color:#fff;font-size:.74rem;font-weight:800;cursor:pointer}.settings-actions .settings-reset{border-color:rgba(23,52,58,.18);background:#ffffff;color:#17343a}.settings-actions button:disabled{opacity:.5;cursor:wait}.admin-settings__loading{padding:4rem;text-align:center;color:#526d65;font-size:.8rem}@media(max-width:680px){.admin-settings__head{align-items:start;flex-direction:column;gap:1rem}.admin-settings__content{width:min(100% - 1.5rem,1200px);padding-top:1.25rem}.settings-grid{grid-template-columns:1fr}.settings-span{grid-column:auto}.settings-section__intro{align-items:start;flex-direction:column}.settings-colours article{grid-template-columns:1fr 1fr}.settings-colours article input:nth-child(3){grid-column:1/-1}.settings-colours i{grid-column:2;grid-row:1/3;justify-self:end}}
 .settings-location-note{display:flex;align-items:flex-start;gap:.45rem;margin:0;padding:.75rem .8rem;background:#eaf3ed;color:#526d65;font-size:.7rem;line-height:1.55}.settings-location-note svg{flex:0 0 auto;width:15px;color:#37675d}
 .settings-location-picker{display:grid;gap:.7rem;margin-top:.15rem}.settings-location-picker__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}.settings-location-picker__head strong{color:#285147;font-size:.78rem}.settings-location-picker__head span{color:#526d65;font-size:.7rem;font-weight:400}@media(max-width:680px){.settings-location-picker__head{align-items:flex-start;flex-direction:column;gap:.25rem}}

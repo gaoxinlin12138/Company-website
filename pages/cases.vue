@@ -283,7 +283,7 @@ watch(() => route.query.category, value => {
       </div>
     </section>
 
-    <section ref="scenarioSection" class="scenario-section" :style="{ '--scenario-count': String(scenarios.length), '--scenario-height': `${scenarios.length * 100}svh` }" aria-labelledby="scenario-heading">
+    <section ref="scenarioSection" class="scenario-section" :style="{ '--scenario-height': `${scenarios.length * 100}svh` }" aria-labelledby="scenario-heading">
       <div class="scenario-pin">
         <header class="scenario-section__head page-wrap">
           <h2 id="scenario-heading">{{ language === 'en' ? 'Four spaces, four sourcing priorities' : '四类空间，四种采购重点' }}</h2>
@@ -362,7 +362,7 @@ watch(() => route.query.category, value => {
 .cases-overview__principles strong { color:var(--ink); font-size:.76rem; }
 .cases-overview__principles span { color:var(--muted); font-size:.72rem; line-height:1.75; }
 
-.scenario-section { --scenario-count:4; --scenario-height:400svh; position:relative; height:var(--scenario-height); background:#17343a; color:#fff; }
+.scenario-section { --scenario-height:400svh; position:relative; height:var(--scenario-height); background:#17343a; color:#fff; }
 .scenario-pin { position:sticky; top:0; height:100svh; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; padding:clamp(5.5rem,8vh,7rem) 0 clamp(1.5rem,3vh,2.5rem); }
 .scenario-section__head { display:flex; align-items:end; justify-content:space-between; gap:3rem; margin-bottom:clamp(1rem,2vh,1.75rem); }
 .scenario-section__head h2 { max-width:13ch; margin:0; scroll-margin-top:6rem; font-size:clamp(2rem,3.5vw,3.35rem); line-height:1.04; letter-spacing:-.035em; text-wrap:balance; }

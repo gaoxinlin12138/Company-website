@@ -9,6 +9,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.136",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.98",
     "@nuxt/icon": "^1.15.0",
@@ -19,7 +20,6 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.136",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.2"
   }

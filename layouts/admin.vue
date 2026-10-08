@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const route = useRoute()
+const { data: auth } = await useFetch<{ authenticated: boolean }>('/api/admin/auth/status')
+if (!auth.value?.authenticated && route.path !== '/admin/login') {
+  await navigateTo('/admin/login', { replace: true })
+}
+</script>
+
 <template>
   <div class="admin-shell">
     <AdminNav />
@@ -9,7 +17,7 @@
 .admin-shell { min-height: 100vh; display: flex; background: #f3f7f4; }
 .admin-nav { position: sticky; top: 0; z-index: 30; flex: 0 0 238px; height: 100vh; min-height: 100vh; display: flex; flex-direction: column; overflow-y: auto; padding: 1.6rem 1rem 1.2rem; background: #17343a; color: #fff; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.18) transparent; }
 .admin-nav__brand { display: flex; align-items: center; gap: .7rem; padding: 0 .55rem 1.8rem; color: #fff; }
-.admin-nav__brand > span { display: grid; place-items: center; width: 38px; height: 38px; background: #37675d; color: #fff; font-size: .64rem; font-weight: 800; letter-spacing: .08em; }
+.admin-nav__brand > span { display: grid; place-items: center; width: 38px; height: 38px; background: #37675d; color: #fff; font-size: .56rem; font-weight: 800; letter-spacing: 0; }
 .admin-nav__brand div { display: grid; gap: .15rem; }.admin-nav__brand strong { font-size: .84rem; letter-spacing: .04em; }.admin-nav__brand small { color: rgba(255,255,255,.5); font-size: .65rem; }
 .admin-nav__section { padding: 0 .8rem .55rem; color: rgba(255,255,255,.38); font-size: .6rem; font-weight: 800; letter-spacing: .16em; }
 .admin-nav__links { display: grid; gap: .25rem; }

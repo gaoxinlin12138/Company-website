@@ -80,7 +80,7 @@ async function logout() {
 
 <template>
   <nav class="admin-nav" aria-label="管理后台导航">
-    <NuxtLink class="admin-nav__brand" to="/admin/home"><span>HWF</span><div><strong>红财万富</strong><small>网站内容管理</small></div></NuxtLink>
+    <NuxtLink class="admin-nav__brand" to="/admin/home"><span>HCWF</span><div><strong>红财万富</strong><small>网站内容管理</small></div></NuxtLink>
     <div class="admin-nav__section">CONTENT CONTROL</div>
     <div class="admin-nav__links">
       <div v-for="group in groups" :key="group.to" class="admin-nav__group" :class="{ 'is-active': isActive(group.to), 'is-expanded': expanded[group.to] }">

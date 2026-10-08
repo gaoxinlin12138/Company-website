@@ -1,13 +1,14 @@
 import { getMysqlPool } from '~/server/utils/mysql'
 import { requireAdmin } from '~/server/utils/admin-auth'
 import { parsePublishedDate, requireArticleCategory } from '~/server/utils/article-categories'
-const text = (i: Record<string, unknown>, k: string, m = 10000) => typeof i[k] === 'string' ? String(i[k]).trim().slice(0, m) : ''
+import { readText } from '~/server/utils/input'
+
 export default defineEventHandler(async (event) => {
   requireAdmin(event)
   const i = await readBody(event) as Record<string, unknown>
-  const titleZh = text(i, 'titleZh', 240), titleEn = text(i, 'titleEn', 240), slug = text(i, 'slug', 240), categoryId = text(i, 'categoryId', 32)
-  const summaryZh = text(i, 'summaryZh'), summaryEn = text(i, 'summaryEn'), contentZh = text(i, 'contentZh'), contentEn = text(i, 'contentEn'), coverImage = text(i, 'coverImage', 500)
-  const status = text(i, 'status', 12).toUpperCase() || 'DRAFT'
+  const titleZh = readText(i, 'titleZh', 240), titleEn = readText(i, 'titleEn', 240), slug = readText(i, 'slug', 240), categoryId = readText(i, 'categoryId', 32)
+  const summaryZh = readText(i, 'summaryZh'), summaryEn = readText(i, 'summaryEn'), contentZh = readText(i, 'contentZh'), contentEn = readText(i, 'contentEn'), coverImage = readText(i, 'coverImage', 500)
+  const status = readText(i, 'status', 12).toUpperCase() || 'DRAFT'
   const sortOrder = Number(i.sortOrder || 0)
   if (!titleZh || !titleEn || !slug || !categoryId || !summaryZh || !summaryEn || !contentZh || !contentEn || !coverImage || !['DRAFT', 'PUBLISHED', 'ARCHIVED'].includes(status) || !Number.isInteger(sortOrder) || sortOrder < 0) {
     throw createError({ statusCode: 400, statusMessage: '请完整填写新闻必填项。' })

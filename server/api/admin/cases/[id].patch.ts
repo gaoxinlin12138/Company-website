@@ -1,11 +1,12 @@
 import { getMysqlPool } from '~/server/utils/mysql'
 import { requireAdmin } from '~/server/utils/admin-auth'
+import { readText } from '~/server/utils/input'
 
 export default defineEventHandler(async (event) => {
   requireAdmin(event)
   const id = getRouterParam(event, 'id') || ''
   const input = await readBody(event) as Record<string, unknown>
-  const text = (key: string, max = 10000) => typeof input?.[key] === 'string' ? String(input[key]).trim().slice(0, max) : ''
+  const text = (key: string, max = 10000) => readText(input, key, max)
   const status = text('status', 12).toUpperCase()
   const sortOrder = Number(input?.sortOrder)
 

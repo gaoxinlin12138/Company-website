@@ -18,6 +18,10 @@ function sessionSecret() {
   return secret
 }
 
+export function adminSessionConfigured() {
+  return String(useRuntimeConfig().sessionSecret || '').length >= 32
+}
+
 function encode(value: string) {
   return Buffer.from(value, 'utf8').toString('base64url')
 }
@@ -48,11 +52,55 @@ export async function verifyAdminPassword(password: string, stored: string) {
   }
 }
 
+export async function ensureConfiguredAdmin() {
+  const { getMysqlPool } = await import('~/server/utils/mysql')
+  const pool = getMysqlPool()
+  const [rows] = await pool.query(
+    'SELECT username FROM admin_users ORDER BY created_at ASC LIMIT 1'
+  ) as any
+  if (rows[0]?.username) return { ready: true, username: String(rows[0].username) }
+
+  const config = useRuntimeConfig()
+  const username = String(config.adminUsername || '').trim()
+  const password = String(config.adminPassword || '')
+  if (!/^[\w.-]{3,60}$/.test(username) || password.length < 12 || password.length > 200) {
+    return { ready: false, username }
+  }
+
+  const id = randomBytes(16).toString('hex')
+  const passwordHash = await hashAdminPassword(password)
+  await pool.execute(
+    'INSERT IGNORE INTO admin_users (id, username, password_hash, role) VALUES (?, ?, ?, ?)',
+    [id, username, passwordHash, 'admin']
+  )
+  const [created] = await pool.query(
+    'SELECT username FROM admin_users ORDER BY created_at ASC LIMIT 1'
+  ) as any
+  return {
+    ready: Boolean(created[0]?.username),
+    username: String(created[0]?.username || username)
+  }
+}
+
+export function assertSameOrigin(event: H3Event) {
+  if (['GET', 'HEAD', 'OPTIONS'].includes(event.method)) return
+  const origin = getHeader(event, 'origin')
+  if (!origin) return
+  try {
+    if (new URL(origin).host !== getRequestURL(event).host) {
+      throw createError({ statusCode: 403, statusMessage: 'Cross-origin admin request rejected' })
+    }
+  } catch (error: any) {
+    if (error?.statusCode === 403) throw error
+    throw createError({ statusCode: 403, statusMessage: 'Invalid request origin' })
+  }
+}
+
 export function setAdminSession(event: H3Event, session: Omit<AdminSession, 'exp'>) {
   const payload = encode(JSON.stringify({ ...session, exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS }))
   setCookie(event, SESSION_COOKIE, `${payload}.${sign(payload)}`, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: SESSION_TTL_SECONDS
@@ -84,6 +132,7 @@ export function readAdminSession(event: H3Event): AdminSession | null {
 }
 
 export function requireAdmin(event: H3Event) {
+  assertSameOrigin(event)
   const session = readAdminSession(event)
   if (!session) throw createError({ statusCode: 401, statusMessage: 'Admin authentication required' })
   return session

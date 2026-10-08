@@ -92,7 +92,7 @@ pnpm dev --host 127.0.0.1 --port 8126
 
 公开页面优先从 `/api/content/*` 读取已发布内容；服务不可用时使用 `data/` 中的本地兜底数据。产品、新闻、案例、首页内容和询价均通过 MySQL API 持久化，数据库表结构与初始化数据位于 `database/`，连接由 `DATABASE_URL` 配置。
 
-首次使用管理后台时，通过初始化接口创建管理员账号，用户名至少 3 个字符，密码至少 10 个字符。项目不在文档或源码中保存默认账号密码；部署前必须设置随机的 `NUXT_SESSION_SECRET`。
+管理后台不提供公开注册或网页端创建账号。全新数据库首次启动时，服务端读取 `ADMIN_USERNAME` 与 `ADMIN_PASSWORD` 创建唯一的初始管理员；已有管理员时不会覆盖。登录页只预填用户名，密码不得写入源码、文档或浏览器。部署前必须设置至少 32 位的随机 `NUXT_SESSION_SECRET` 和至少 12 位的唯一管理员密码。
 
 后台中文内容保存时可调用百度翻译生成英文。翻译凭证只放在本地 `.env`，不要提交到仓库：
 
@@ -130,6 +130,7 @@ BAIDU_TRANSLATE_SECRET_KEY="your-secret-key"
 - [设计规范](docs/DESIGN.md)：瓷白与浅青绿主题、字体、组件和无障碍约束。
 - [内容模型](docs/CONTENT-MODEL.md)：后台字段、状态和前后台职责边界。
 - [本地 MySQL](docs/LOCAL-MYSQL.md)：Windows 本地数据库配置。
+- [后台使用与部署](docs/ADMIN-GUIDE.md)：后台入口、日常操作、安全配置和阿里云面板更新步骤。
 - [主题验证记录](docs/porcelain-green/README.md)：最近一次视觉更新的验证结论和相关素材索引。
 - [设计系统速查表](design-system/hongcai-wanfu/MASTER.md)：前端实现时常用的颜色和组件令牌。
 
@@ -141,7 +142,7 @@ pnpm build
 node .output/server/index.mjs
 ```
 
-生产环境至少应配置 `DATABASE_URL`、`NUXT_SESSION_SECRET` 和实际使用的第三方服务密钥。部署前确认 `.env`、数据库密码、上传目录和日志不会被公开；不要把 `.env`、`node_modules/`、`.nuxt/` 或 `.output/` 提交到 GitHub。
+生产环境至少应配置 `DATABASE_URL`、`NUXT_SESSION_SECRET`、`ADMIN_USERNAME`、`ADMIN_PASSWORD` 和实际使用的第三方服务密钥。部署前确认 `.env`、数据库密码、管理员密码、上传目录和日志不会被公开；不要把 `.env`、`node_modules/`、`.nuxt/` 或 `.output/` 提交到 GitHub。
 
 ## 常见问题
 
