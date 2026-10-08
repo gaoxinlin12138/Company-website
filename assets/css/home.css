@@ -13,8 +13,8 @@
 .home-hero__content { position: absolute; bottom: clamp(6rem, 12vh, 9rem); left: max(48px, calc((100vw - 1320px) / 2)); z-index: 3; width: min(42vw, 640px); }
 .home-hero__slide:not(.is-active) .home-hero__content { opacity: 0; }
 .home-hero__category { margin: 0; color: #d6dddc; font-size: .82rem; font-weight: 600; }
-.home-hero h1 { max-width: 9em; margin: 1rem 0 1.25rem; font-size: clamp(2.6rem, 4.1vw, 4.2rem); line-height: .98; letter-spacing: -.035em; font-weight: 700; white-space: pre-line; text-wrap: balance; }
-.home-hero h1 span, .home-hero h1 em { display: block; color: inherit; font-style: normal; }
+.home-hero__title { max-width: 9em; margin: 1rem 0 1.25rem; font-size: clamp(2.6rem, 4.1vw, 4.2rem); line-height: .98; letter-spacing: -.035em; font-weight: 700; white-space: pre-line; text-wrap: balance; }
+.home-hero__title span, .home-hero__title em { display: block; color: inherit; font-style: normal; }
 .home-hero__summary { max-width: 48ch; margin: 0; color: rgba(255,255,255,.76); font-size: 1rem; line-height: 1.75; }
 .home-hero__actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
 .home-button { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 48px; border: 1px solid transparent; padding: .8rem 1.2rem; background: transparent; font-size: .76rem; font-weight: 800; letter-spacing: .02em; transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
@@ -26,7 +26,7 @@
 .home-button--ghost { border-color: currentColor; color: inherit; }
 .home-button--ghost:hover { background: var(--white); color: var(--ink); }
 .home-button:disabled { cursor: wait; opacity: .6; transform: none; }
-.home-hero__category, .home-hero h1, .home-hero__summary, .home-hero__actions { opacity: 1; transform: none; filter: none; }
+.home-hero__category, .home-hero__title, .home-hero__summary, .home-hero__actions { opacity: 1; transform: none; filter: none; }
 .home-hero__progress { position: absolute; right: clamp(1rem,3vw,3rem); bottom: clamp(1rem,2vw,2rem); z-index: 4; display: grid; grid-template-columns: 44px 24px minmax(64px,84px) 24px 44px; align-items: center; gap: .55rem; color: rgba(255,255,255,.78); font-size: .75rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .home-hero__progress i { height: 1px; overflow: hidden; background: rgba(255,255,255,.28); }
 .home-hero__progress b { display: block; width: 100%; height: 100%; background: var(--red); transform-origin: left; }
@@ -155,7 +155,7 @@
   .home-hero__slide::before { inset: 0 0 54%; background-position: center; }
   .home-hero__shade { background: linear-gradient(180deg,rgba(9,20,25,.05) 0 31%,rgba(9,20,25,.88) 47%,rgba(9,20,25,1) 62%); }
   .home-hero__content { right: 16px; bottom: 6.5rem; left: 16px; width: auto; }
-  .home-hero h1 { max-width: 12ch; font-size: clamp(2.35rem,10.5vw,3.5rem); }
+  .home-hero__title { max-width: 12ch; font-size: clamp(2.35rem,10.5vw,3.5rem); }
   .home-hero__summary { max-width: 38rem; font-size: 1rem; line-height: 1.65; }
   .home-hero__actions { margin-top: 1.25rem; }
   .home-hero__progress { right: max(16px,env(safe-area-inset-right)); bottom: max(.8rem,env(safe-area-inset-bottom)); left: auto; grid-template-columns: 44px 24px minmax(52px,72px) 24px 44px; gap: .4rem; }
@@ -189,7 +189,7 @@
 @media (max-width: 430px) {
   .home-hero__content { bottom: 6.2rem; }
   .home-hero__category { font-size: .75rem; }
-  .home-hero h1 { margin-block: .65rem .8rem; font-size: clamp(2rem,10vw,2.8rem); }
+  .home-hero__title { margin-block: .65rem .8rem; font-size: clamp(2rem,10vw,2.8rem); }
   .home-hero__summary { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
   .home-hero__actions { gap: .5rem; }
   .home-button { min-height: 46px; padding-inline: .85rem; }
@@ -201,7 +201,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero__slide, .home-hero__slide::before, .home-hero__category, .home-hero h1, .home-hero__summary, .home-hero__actions, [data-home-reveal] { transform: none; filter: none; transition: none; }
+  .home-hero__slide, .home-hero__slide::before, .home-hero__category, .home-hero__title, .home-hero__summary, .home-hero__actions, [data-home-reveal] { transform: none; filter: none; transition: none; }
   .home-hero__slide, .home-hero__slide.is-queued, .home-hero__slide.is-exiting { visibility: hidden; opacity: 0; }
   .home-hero__slide.is-active { visibility: visible; opacity: 1; }
   .home-hero__progress b.is-running { animation: home-carousel-progress 6.5s linear forwards !important; }

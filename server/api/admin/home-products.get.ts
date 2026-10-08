@@ -16,8 +16,9 @@ export default defineEventHandler(async (event) => {
     ORDER BY p.sort_order ASC, p.created_at DESC
   `) as any
 
+  const publishedIds = new Set((rows as Array<{ id: string }>).map(product => product.id))
   return {
-    productIds: Array.isArray(setting.productIds) ? setting.productIds : [],
+    productIds: Array.isArray(setting.productIds) ? setting.productIds.filter(id => publishedIds.has(id)) : [],
     products: rows
   }
 })

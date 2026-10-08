@@ -51,8 +51,9 @@ export default defineEventHandler(async () => {
     const selected = Array.isArray(setting.productIds)
       ? setting.productIds.map(id => byId.get(id)).filter(Boolean) as ProductRow[]
       : []
-    const output = selected.length ? selected : products.slice(0, 6)
-    return output.map(mapProduct)
+    // An empty selection is intentional: do not repopulate the homepage with
+    // every published product after the administrator has cleared it.
+    return selected.map(mapProduct)
   } catch {
     return []
   }

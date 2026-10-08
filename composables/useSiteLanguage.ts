@@ -66,7 +66,6 @@ const english: Record<string, string> = {
   '按材质': 'By material',
   '产品排序': 'Product sorting',
   '示意素材 / 待替换': 'Illustrative visual / to be replaced',
-  '示例款 / 待补型号': 'Sample style / model pending',
   '表面': 'Finish',
   '当前筛选暂无产品，请更换分类或材质。': 'No products match these filters. Try another category or material.',
   '面盆龙头': 'Basin faucets',

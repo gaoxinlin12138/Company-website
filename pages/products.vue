@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { products as staticProducts } from '~/data/site'
+import { productCategorySections, type ProductItem } from '~/data/site'
 import { defaultProductCatalogueContent, type ProductCatalogueContent } from '~/data/site-content'
 
 const { language, t } = useSiteLanguage()
@@ -10,22 +10,17 @@ useSeoMeta({
 
 type CatalogueSectionKey = 'all' | 'sanitaryware' | 'hardware' | 'installation'
 type ProductSectionKey = Exclude<CatalogueSectionKey, 'all'>
-type ProductViewItem = (typeof staticProducts)[number] & { id?: string; nameEn?: string; categoryEn?: string; materialEn?: string; model?: string }
+type ProductViewItem = ProductItem & { id?: string; nameEn?: string; categoryEn?: string; materialEn?: string; model?: string }
 
-const { data: publishedProducts } = await useFetch<ProductViewItem[]>('/api/content/products', { default: () => [] })
-const products = computed<ProductViewItem[]>(() => {
-  // The publication state is the source of truth. Product names and models
-  // may legitimately contain digits such as 12312, so do not hide records
-  // with content heuristics that make the frontend count differ from admin.
-  return publishedProducts.value?.length ? publishedProducts.value : staticProducts
-})
+const { data: publishedProducts, error: productsError, status: productsStatus } = await useFetch<ProductViewItem[]>('/api/content/products', { default: () => [] })
+// An empty database result is an empty catalogue, not a request for demo content.
+const products = computed<ProductViewItem[]>(() => productsError.value ? [] : publishedProducts.value || [])
 const { data: catalogueContent } = await useFetch<ProductCatalogueContent>('/api/content/product-catalogue', { default: () => defaultProductCatalogueContent })
 
-const catalogueSections: Array<{ key: ProductSectionKey; label: string; icon: string; categories: string[] }> = [
-  { key: 'sanitaryware', label: '卫浴产品', icon: 'lucide:bath', categories: ['面盆龙头', '花洒套装', '坐便器', '浴室柜', '厨房龙头'] },
-  { key: 'hardware', label: '卫浴五金', icon: 'lucide:settings-2', categories: ['卫浴挂件', '阀门配件'] },
-  { key: 'installation', label: '安装及配件', icon: 'lucide:wrench', categories: ['排水配件', '安装配件'] }
-]
+const catalogueSections: Array<{ key: ProductSectionKey; label: string; group: string; icon: string; categories: string[] }> = productCategorySections.map(section => ({
+  ...section,
+  categories: [...section.categories]
+}))
 const filterCategories = computed(() => catalogueSections.flatMap(section => section.categories))
 const materialOptions = ['全部材质', '不锈钢', '铜', '铝合金', '陶瓷', '待确认']
 
@@ -74,7 +69,7 @@ const pagedProducts = computed(() => {
   const start = (currentPage.value - 1) * productsPerPage
   return filteredProducts.value.slice(start, start + productsPerPage)
 })
-const productOptions = computed(() => products.value.map(item => item.model || t('示例款 / 待补型号')).filter(Boolean))
+const productOptions = computed(() => products.value.map(item => item.model || productText(item, 'name')).filter(Boolean))
 
 function productText(item: ProductViewItem, key: 'name' | 'category' | 'material') {
   if (language.value !== 'en') return item[key]
@@ -134,7 +129,7 @@ async function goToPage(page: number) {
 }
 
 function startInquiry(item?: ProductViewItem) {
-  if (item) inquiry.product = item.model || t('示例款 / 待补型号')
+  if (item) inquiry.product = item.model || productText(item, 'name')
   inquiryPromptVisible.value = true
   inquirySubmitted.value = false
   inquiryFieldErrors.name = ''
@@ -261,13 +256,16 @@ function handleInquirySubmit() {
             <article v-for="item in pagedProducts" :key="item.id || item.model || item.name" class="product-tile">
               <div class="product-tile__image"><img :src="item.image" :alt="item.model || t('产品图片')"></div>
               <div class="product-tile__body">
-                <p class="product-tile__model">{{ item.model || t('示例款 / 待补型号') }}</p>
+                <p class="product-tile__model">{{ item.model || productText(item, 'name') }}</p>
                 <dl><div><dt>{{ t('材质') }}</dt><dd>{{ productText(item, 'material') }}</dd></div></dl>
                 <button type="button" @click="startInquiry(item)"><Icon name="lucide:mail" />{{ t('询价') }}</button>
               </div>
             </article>
           </div>
-          <div v-if="!filteredProducts.length" class="empty-state">{{ t('当前筛选暂无产品，请更换分类或材质。') }}</div>
+          <div v-if="productsStatus === 'pending'" class="empty-state" role="status">{{ language === 'en' ? 'Loading products…' : '正在加载产品…' }}</div>
+          <div v-else-if="productsError" class="empty-state" role="alert">{{ language === 'en' ? 'Products could not be loaded. Please try again later.' : '产品暂时无法加载，请稍后重试。' }}</div>
+          <div v-else-if="!products.length" class="empty-state" role="status">{{ language === 'en' ? 'No published products yet.' : '暂无已发布产品。' }}</div>
+          <div v-else-if="!filteredProducts.length" class="empty-state" role="status">{{ t('当前筛选暂无产品，请更换分类或材质。') }}</div>
           <nav v-if="totalPages > 1" class="catalogue-pagination" :aria-label="language === 'en' ? 'Product pagination' : '产品分页'">
             <button class="catalogue-pagination__arrow" type="button" :disabled="currentPage === 1" :aria-label="language === 'en' ? 'Previous page' : '上一页'" @click="goToPage(currentPage - 1)">
               <Icon name="lucide:chevron-left" />

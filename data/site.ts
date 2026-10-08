@@ -1,5 +1,11 @@
 export type ProductGroup = '卫浴产品' | '其他产品'
 
+export const productCategorySections = [
+  { key: 'sanitaryware', label: '卫浴产品', group: '卫浴产品', icon: 'lucide:bath', categories: ['面盆龙头', '花洒套装', '坐便器', '浴室柜', '厨房龙头'] },
+  { key: 'hardware', label: '卫浴五金', group: '卫浴五金', icon: 'lucide:settings-2', categories: ['卫浴挂件', '阀门配件'] },
+  { key: 'installation', label: '安装及配件', group: '安装及配件', icon: 'lucide:wrench', categories: ['排水配件', '安装配件'] }
+] as const
+
 export interface ProductItem {
   name: string
   category: string
@@ -16,19 +22,3 @@ export const navigation = [
   { label: '案例展示', to: '/cases' },
   { label: '联系我们', to: '/contact' }
 ]
-
-export const products: ProductItem[] = [
-  { name: '面盆龙头', category: '面盆龙头', group: '卫浴产品', material: '铜', image: '/assets/images/hero-basin-concept.webp' },
-  { name: '淋浴花洒套装', category: '花洒套装', group: '卫浴产品', material: '不锈钢', image: '/assets/images/hero-sanitaryware.webp' },
-  { name: '坐便器系列', category: '坐便器', group: '卫浴产品', material: '陶瓷', image: '/assets/images/detail-materials.webp' },
-  { name: '浴室柜组合', category: '浴室柜', group: '卫浴产品', material: '待确认', image: '/assets/images/hero-faucet-concept.webp' },
-  { name: '厨房龙头', category: '厨房龙头', group: '卫浴产品', material: '不锈钢', image: '/assets/images/hero-basin-concept.webp' },
-  { name: 'LTA-822 花洒', category: '花洒套装', group: '卫浴产品', material: '待确认', image: '/assets/images/lta-822.png' },
-  { name: '毛巾架', category: '卫浴挂件', group: '其他产品', material: '不锈钢', image: '/assets/images/detail-materials.webp' },
-  { name: '置物架', category: '卫浴挂件', group: '其他产品', material: '铝合金', image: '/assets/images/hero-faucet-concept.webp' },
-  { name: '三角阀', category: '阀门配件', group: '其他产品', material: '铜', image: '/assets/images/hero-basin-concept.webp' },
-  { name: '进水阀', category: '阀门配件', group: '其他产品', material: '待确认', image: '/assets/images/detail-materials.webp' },
-  { name: '地漏', category: '排水配件', group: '其他产品', material: '不锈钢', image: '/assets/images/hero-sanitaryware.webp' },
-  { name: '安装配件', category: '安装配件', group: '其他产品', material: '待确认', image: '/assets/images/hero-faucet-concept.webp' }
-]
-

@@ -246,8 +246,8 @@ export const defaultProductCatalogueContent = {
 }
 
 export const defaultHomeProductContent = {
-  // An empty selection keeps the public homepage on its catalogue-order
-  // fallback until an administrator chooses a curated set.
+  // An empty selection keeps the public homepage product gallery empty until
+  // an administrator explicitly chooses products.
   productIds: [] as string[]
 }
 

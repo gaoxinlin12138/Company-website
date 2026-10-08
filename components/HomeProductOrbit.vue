@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type SampleProduct = {
+type GalleryProduct = {
   id?: string
   name: string
   nameEn?: string
@@ -11,12 +11,12 @@ type SampleProduct = {
   image: string
 }
 
-const props = defineProps<{ products: SampleProduct[] }>()
+const props = defineProps<{ products: GalleryProduct[] }>()
 const { language } = useSiteLanguage()
 
 const galleryItems = computed(() => props.products.map((product) => {
   const name = language.value === 'en' ? (product.nameEn || product.name) : product.name
-  const model = product.model && product.model !== '待补型号' ? ` · ${product.model}` : ''
+  const model = product.model ? ` · ${product.model}` : ''
   return {
     image: product.image,
     text: `${name}${model}`
@@ -27,10 +27,11 @@ const galleryItems = computed(() => props.products.map((product) => {
 <template>
   <section
     class="product-gallery"
+    :class="{ 'is-empty': !products.length }"
     :aria-label="language === 'en' ? 'Recommended product gallery' : '推荐产品弧形画廊'"
   >
     <p v-if="!products.length" class="product-gallery__empty" role="status">
-      {{ language === 'en' ? 'Published product samples will appear here.' : '已发布的产品样品将在这里展示。' }}
+      {{ language === 'en' ? 'No published products yet.' : '暂无已发布产品。' }}
     </p>
 
     <template v-else>
@@ -108,6 +109,7 @@ const galleryItems = computed(() => props.products.map((product) => {
 .product-gallery__guide p { margin: 0; }
 .product-gallery__guide svg { width: 16px; height: 16px; color: var(--ink); }
 .product-gallery__empty { margin: 0; padding: 4rem 1.5rem; color: var(--muted); text-align: center; }
+.product-gallery.is-empty { min-height: 0; }
 
 @media (max-width: 720px) {
   .product-gallery { --gallery-edge-fade: 24px; min-height: 520px; }

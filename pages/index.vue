@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { homeHeroSlides } from '~/data/home'
 import { caseStudies } from '~/data/case-studies'
-import { products as fallbackProducts } from '~/data/site'
 import type { HomeHeroSlide } from '~/types/content'
 
 const { language, t } = useSiteLanguage()
@@ -44,11 +43,9 @@ type HomeProduct = {
 }
 
 const { data: publishedProducts } = await useFetch<HomeProduct[]>('/api/content/home-products', {
-  default: () => fallbackProducts.slice(0, 6).map((item, index) => ({ ...item, id: `fallback-${index + 1}`, model: '待补型号' }))
+  default: () => []
 })
-const recommendedProducts = computed(() => {
-  return publishedProducts.value.length ? publishedProducts.value : fallbackProducts.slice(0, 6).map((item, index) => ({ ...item, id: `fallback-${index + 1}`, model: '待补型号' }))
-})
+const recommendedProducts = computed(() => publishedProducts.value || [])
 type HomeNews = {
   slug: string
   date: string

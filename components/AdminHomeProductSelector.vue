@@ -98,7 +98,7 @@ async function save() {
           <div><h3>当前轮播顺序</h3><span>使用上下箭头调整旋转顺序。</span></div>
           <button type="button" :disabled="saving" @click="save">{{ saving ? '保存中…' : '保存选择' }} <Icon name="lucide:save" /></button>
         </div>
-        <div v-if="!selectedProducts.length" class="admin-home-products__empty admin-home-products__empty--small">尚未选择产品，前台会显示默认产品。</div>
+        <div v-if="!selectedProducts.length" class="admin-home-products__empty admin-home-products__empty--small">尚未选择产品；有已发布产品时，前台会按发布顺序显示。</div>
         <ol v-else class="admin-home-products__order">
           <li v-for="(product, index) in selectedProducts" :key="product.id">
             <span class="admin-home-products__number">{{ String(index + 1).padStart(2, '0') }}</span>

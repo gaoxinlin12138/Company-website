@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { navigation, products } from '~/data/site'
+import { navigation, productCategorySections } from '~/data/site'
 import { NEWS_CATEGORIES, sampleNewsArticles } from '~/data/news'
 import { caseStudies } from '~/data/case-studies'
 
@@ -67,7 +67,7 @@ type SearchItem = {
 }
 
 const { data: managedSearchProducts } = await useFetch<SearchProduct[]>('/api/content/products', {
-  default: () => products.map(item => ({ ...item }))
+  default: () => []
 })
 const { data: managedSearchNews } = await useFetch<SearchArticle[]>('/api/content/articles', {
   default: () => sampleNewsArticles
@@ -94,15 +94,17 @@ const languageOptions = [
   { code: 'en' as const, label: 'English', nativeLabel: 'EN' }
 ]
 
-const productCategories = Array.from(
-  new Map(products.map(item => [item.category, { category: item.category, group: item.group }])).values()
-)
+const productCategories = computed(() => productCategorySections.flatMap(section => section.categories.map(category => ({
+  category,
+  group: section.group,
+  count: (managedSearchProducts.value || []).filter(item => item.category === category).length
+}))))
 
-const navigationMenus = {
+const navigationMenus = computed(() => ({
   '/products': {
     heading: '',
     meta: '',
-    items: productCategories.map(item => ({
+    items: productCategories.value.map(item => ({
       label: item.category,
       to: { path: '/products', query: { group: item.group, category: item.category } }
     }))
@@ -142,22 +144,17 @@ const navigationMenus = {
       { label: '提交采购需求', to: '/contact#inquiry' }
     ]
   }
-}
-
-const navigationItems = navigation.slice(1).map(item => ({
-  ...item,
-  menu: navigationMenus[item.to as keyof typeof navigationMenus]
 }))
+
+const navigationItems = computed(() => navigation.slice(1).map(item => ({
+  ...item,
+  menu: navigationMenus.value[item.to as keyof typeof navigationMenus.value]
+})))
 
 const searchItems = computed<SearchItem[]>(() => {
   const staticItems: SearchItem[] = [
   { label: '首页', meta: '网站首页', to: '/', keywords: '首页 home' },
   { label: '产品中心', meta: '全部产品', to: '/products', keywords: '产品 中心 product' },
-  { label: '花洒套装', meta: '卫浴产品', to: '/products?category=花洒套装', keywords: '花洒 淋浴 shower' },
-  { label: '面盆龙头', meta: '卫浴产品', to: '/products?category=面盆龙头', keywords: '面盆 龙头 faucet' },
-  { label: '厨房龙头', meta: '卫浴产品', to: '/products?category=厨房龙头', keywords: '厨房 龙头 kitchen' },
-  { label: '坐便器', meta: '卫浴产品', to: '/products?category=坐便器', keywords: '坐便器 马桶 toilet' },
-  { label: '其他产品', meta: '卫浴五金与安装配件', to: '/products?group=卫浴五金', keywords: '毛巾架 置物架 三角阀 进水阀 五金 配件' },
   { label: '公司简介', meta: '关于我们', to: '/about#company-profile', keywords: '公司 简介 介绍 关于 我们' },
   { label: '品牌文化', meta: '关于我们', to: '/about#brand-culture', keywords: '品牌 文化 理念' },
   { label: '荣誉资质', meta: '关于我们', to: '/about#qualifications', keywords: '荣誉 资质 认证 文件' },
@@ -167,9 +164,7 @@ const searchItems = computed<SearchItem[]>(() => {
   { label: '联系我们', meta: '采购与合作咨询', to: '/contact', keywords: '联系 询价 报价 合作 电话 邮箱' }
   ].map((item, index) => ({ ...item, key: `page-${index}` }))
 
-  const productSource: SearchProduct[] = managedSearchProducts.value?.length
-    ? managedSearchProducts.value
-    : products.map(item => ({ ...item }))
+  const productSource: SearchProduct[] = managedSearchProducts.value || []
   const productItems = productSource.map((item, index) => {
     const category = item.category || '产品中心'
     const label = item.name || item.model || category
@@ -317,23 +312,25 @@ watch(() => route.fullPath, () => {
         <div
           v-for="item in navigationItems"
           :key="item.to"
-          class="site-nav__item site-nav__item--has-dropdown"
-          @mouseenter="handleDropdownHover(item.to)"
+          class="site-nav__item"
+          :class="{ 'site-nav__item--has-dropdown': item.menu.items.length }"
+          @mouseenter="item.menu.items.length && handleDropdownHover(item.to)"
           @mouseleave="handleDropdownHover(null)"
-          @focusin="handleDropdownFocus($event, item.to)"
+          @focusin="item.menu.items.length && handleDropdownFocus($event, item.to)"
           @focusout="closeDropdownOnFocusOut"
         >
           <NuxtLink
             class="site-nav__link"
             :to="item.to"
             :class="{ 'is-active': route.path === item.to }"
-            :aria-controls="`${item.to.slice(1)}-navigation-dropdown`"
-            :aria-expanded="activeDropdown === item.to"
+            :aria-controls="item.menu.items.length ? `${item.to.slice(1)}-navigation-dropdown` : undefined"
+            :aria-expanded="item.menu.items.length ? activeDropdown === item.to : undefined"
           >
             {{ t(item.label) }}
-            <Icon class="site-nav__caret" name="lucide:chevron-down" />
+            <Icon v-if="item.menu.items.length" class="site-nav__caret" name="lucide:chevron-down" />
           </NuxtLink>
           <button
+            v-if="item.menu.items.length"
             class="site-nav__mobile-toggle"
             type="button"
             :aria-label="language === 'en' ? `Show ${t(item.label)} sections` : `展开${t(item.label)}子栏目`"
@@ -344,6 +341,7 @@ watch(() => route.fullPath, () => {
             <Icon name="lucide:chevron-down" />
           </button>
           <div
+            v-if="item.menu.items.length"
             :id="`${item.to.slice(1)}-navigation-dropdown`"
             class="product-dropdown"
             :class="{ 'is-open': activeDropdown === item.to, 'product-dropdown--compact': !item.menu.heading }"
