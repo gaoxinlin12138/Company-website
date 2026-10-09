@@ -1,5 +1,3 @@
-export type ProductGroup = '卫浴产品' | '其他产品'
-
 export const productCategorySections = [
   { key: 'sanitaryware', label: '卫浴产品', group: '卫浴产品', icon: 'lucide:bath', categories: ['面盆龙头', '花洒套装', '坐便器', '浴室柜', '厨房龙头'] },
   { key: 'hardware', label: '卫浴五金', group: '卫浴五金', icon: 'lucide:settings-2', categories: ['卫浴挂件', '阀门配件'] },
@@ -9,7 +7,8 @@ export const productCategorySections = [
 export interface ProductItem {
   name: string
   category: string
-  group: ProductGroup
+  // 与 /api/content/products 的返回口径一致；页面用它区分卫浴产品与五金、配件。
+  group: '卫浴产品' | '其他产品'
   material: string
   image: string
 }
