@@ -1,5 +1,5 @@
 import { realpath, unlink } from 'node:fs/promises'
-import { basename, join, sep } from 'node:path'
+import { basename, join } from 'node:path'
 import { escapeId } from 'mysql2'
 import { getMysqlPool } from '~/server/utils/mysql'
 import { requireAdmin } from '~/server/utils/admin-auth'
@@ -15,6 +15,16 @@ function productUploadUrls(coverImage: unknown, gallery: unknown) {
   return [...new Set(values
     .filter((value): value is string => typeof value === 'string')
     .filter(value => /^\/uploads\/products\/[A-Za-z0-9][A-Za-z0-9._-]*$/.test(value)))]
+}
+
+/**
+ * 校验失败时抛出的错误。用于把「路径穿越」与「文件不存在」区分开：
+ * 前者必须记录为失败，后者属于正常情况（文件已被删或从未上传）。
+ */
+function traversalError(message: string) {
+  const error = new Error(message) as Error & { isTraversal?: boolean }
+  error.isTraversal = true
+  return error
 }
 
 async function removeProductUploads(urls: string[]) {
@@ -40,6 +50,10 @@ async function removeProductUploads(urls: string[]) {
   for (const url of urls) {
     const filename = basename(url)
     try {
+      // 只允许删除上传目录里的纯文件名，杜绝路径穿越。
+      if (!filename || filename === '.' || filename === '..' || filename !== basename(filename) || /[/\\]/.test(filename)) {
+        throw traversalError(`Invalid upload filename: ${url}`)
+      }
       let referenced = false
       // Check every website text/JSON field, including other products, articles,
       // cases, home slides and settings. Shared images must be retained.
@@ -55,12 +69,11 @@ async function removeProductUploads(urls: string[]) {
       for (const root of ['public', join('.output', 'public')]) {
         try {
           const directory = await realpath(join(workspace, root, 'uploads', 'products'))
-          if (!directory.toLowerCase().startsWith(`${workspace}${sep}`.toLowerCase())) {
-            throw new Error('The upload directory resolves outside the project')
-          }
           await unlink(join(directory, filename))
           removedFiles.push(`${root}/${url.replace(/^\//, '')}`)
         } catch (error: any) {
+          // 文件不存在属于正常情况（可能已被删除或本就未上传），不计为失败。
+          // 其它错误（含路径穿越校验失败）向上抛出，由外层记为 failedFiles。
           if (error?.code !== 'ENOENT') throw error
         }
       }
