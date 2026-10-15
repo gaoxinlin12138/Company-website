@@ -141,3 +141,101 @@ pnpm build
 `public/uploads/` 是指向项目外部目录的软链接时，重新部署不会影响它；若不是软链接，
 则每次覆盖 `.output` 都会丢掉线上新增的图片，务必先备份。
 
+## 服务器维护注意事项
+
+以下几条来自实际线上部署的经验，换服务器或交接时请一并交代。
+
+### 不要在这台服务器上执行 git 的还原类命令
+
+若 `public/uploads/` 已改为指向项目外部目录（如 `/www/wwwroot/data`）的软链接，
+而这些图片文件仍在 git 跟踪范围内，`git status` 会把它们显示为已删除（`D`）。
+
+此时执行下面任何一条命令，都会把这些图片**重新创建成真实文件**，从而覆盖软链接、
+或在软链接目标里写入重复文件：
+
+```bash
+git checkout .        # 不要执行
+git reset --hard      # 不要执行
+git restore .         # 不要执行
+git clean -fd         # 不要执行
+```
+
+`public/uploads.before-data-migration/` 是迁移前的备份目录，**不要删除**。
+
+### 代码更新方式：逐个文件下载
+
+若服务器无法直连 GitHub（国内常见的 `GnuTLS recv error` 或 `Connection closed`），
+不要依赖 `git pull`，改为从镜像下载单个文件覆盖：
+
+```bash
+B="https://ghproxy.net/https://raw.githubusercontent.com/gaoxinlin12138/Company-website/master"
+curl -fL "$B/要更新的文件路径" -o "要更新的文件路径"
+```
+
+镜像可用地址（按顺序尝试）：`ghproxy.net`、`ghfast.top`、`gh-proxy.com`。
+
+**文件名含方括号时必须加 `-g`**，否则 curl 会把 `[...]` 当作字符区间展开：
+
+```bash
+curl -gfL "$B/pages/news/[slug].vue" -o "pages/news/[slug].vue"
+```
+
+更新完成后仍必须重新构建：
+
+```bash
+rm -rf .output .nuxt && pnpm build
+```
+
+随后在面板重启 Node 进程。此时 git 记录会与实际文件不一致，属正常现象——
+只要功能正常即可，不要为了"对齐 git"而执行还原类命令。
+
+### 配置文件与上传目录的位置
+
+| 内容 | 位置 | 说明 |
+| --- | --- | --- |
+| 环境变量 | 项目根目录 `.env` | 一行一个变量，`KEY=value`，等号两边不能有空格 |
+| 上传的图片 | `/www/wwwroot/data`（项目外） | 通过 `public/uploads` 软链接接入，重新部署不受影响 |
+| 数据库 | 本机 MySQL 的 `hongcai_wanfu` | 分类、内容、询价、管理员均在此 |
+| 构建产物 | `.output/` | 由 `pnpm build` 生成，可直接删除重建 |
+
+`.env` 的常见书写错误会导致变量静默失效：等号两边有空格、两个变量挤在同一行、
+行尾带 Windows 换行符。改完可用下面这条检查（不显示值）：
+
+```bash
+grep -n -E '^[A-Z]' .env | sed 's/=.*/=<已填写>/' | cat -A
+```
+
+### 排查配置是否生效
+
+登录后台后访问 `/api/admin/config-status`，可查看数据库、会话密钥、百度翻译、
+高德地图等配置是否被应用读取（只返回长度与是否就绪，不返回密钥内容）。
+
+注意：`nuxt build` 只在**构建时**读取 `.env`。修改 `.env` 后必须重新构建才生效，
+仅重启进程不够。
+
+### 上线检查清单
+
+- [ ] `NUXT_SESSION_SECRET` 为至少 32 位的随机字符串
+- [ ] 域名已启用 HTTPS；若仍为 HTTP，才临时保留 `NUXT_COOKIE_SECURE="false"`，
+      启用 HTTPS 后必须删除该变量并重新构建
+- [ ] 管理后台密码为唯一强密码，且未出现在任何文档或提交记录中
+- [ ] 百度翻译、高德地图密钥已填写且有效期正常（避免在聊天或截图中明文传递，
+      如需更换请在开放平台重新生成）
+- [ ] `public/uploads` 软链接指向正确，且 `data` 目录有独立备份
+- [ ] MySQL 与 `/www/wwwroot/data` 均已备份，且至少一份不在本机
+- [ ] 阿里云安全组仅开放 80/443，未对公网开放 3306 与 Node 内部端口
+
+### 各类数据的存放位置
+
+| 数据 | 存放位置 | 后台维护入口 |
+| --- | --- | --- |
+| 产品、新闻、案例、轮播、询价 | MySQL | 对应菜单 |
+| 关于我们、联系方式、社交、产品图册 | MySQL `site_settings` | 关于我们 / 联系我们 / 社交联系 |
+| 上传的图片与 PDF | `/www/wwwroot/data` | 各编辑页上传 |
+| 管理员账号 | MySQL `admin_users` | 无界面，用 `scripts/reset-admin.mjs` |
+
+删除产品时会尝试删除对应图片，但仅在**该图片未被其他内容引用**时才真正删除
+（代码会扫描全库文本字段判断）。删除文章与案例不会清理其封面图，长期使用后
+可在 `/www/wwwroot/data` 中人工清理不再引用的文件。
+
+
