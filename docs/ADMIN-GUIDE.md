@@ -58,3 +58,68 @@ ADMIN_PASSWORD="至少12位的唯一强密码"
 - 管理员密码不要与邮箱、微信或服务器密码相同，建议由密码管理器生成并保存。
 - 定期备份 MySQL 和 `public/uploads/`，至少保留一份不在服务器本机的备份。
 - 登录连续失败会被临时限流；会话 Cookie 仅供服务器读取、限制同站使用，并在 12 小时后失效。
+
+## 常见故障处理
+
+### 能登录但一直跳回登录页（HTTP 环境）
+
+会话 Cookie 在生产环境默认带 `Secure` 标记，浏览器只在 HTTPS 下接受它。若域名暂时只能走 HTTP
+（例如 ICP 备案已通过、公安备案尚未完成、证书还没签发），会出现"登录接口返回成功、但不跳转、
+也不报错"的现象：Cookie 被浏览器丢弃，跳转后服务端读不到会话，于是退回登录页。
+
+临时放行方式，在服务器 `.env` 或面板环境变量中增加：
+
+```env
+NUXT_COOKIE_SECURE="false"
+```
+
+然后重启 Node 进程。**证书签发并强制 HTTPS 后必须删除这一行**，恢复默认的强制 HTTPS ——
+否则后台密码与会话 Cookie 会以明文经过网络。
+
+判断当前是否受此影响：浏览器 `F12` → Application → Cookies，看是否存在
+`hongcai_admin_session`。HTTP 访问时它不会出现。
+
+### 登录报 401 账号或密码不正确
+
+`ADMIN_USERNAME` / `ADMIN_PASSWORD` **只在 `admin_users` 表为空时**用于创建第一个管理员。
+表里已有记录时这两个变量会被忽略，登录只认 `created_at` 最早的那一条记录。
+
+用恢复脚本重置密码（在项目根目录执行）：
+
+```bash
+node scripts/reset-admin.mjs                       # 生成随机强密码，只打印一次
+node scripts/reset-admin.mjs --password '自定义密码'  # 指定密码
+```
+
+脚本会先列出所有管理员及创建顺序，指出登录实际使用的是哪一个。
+
+### 登录报 503 管理员账号尚未在服务器配置
+
+说明 `NUXT_SESSION_SECRET` 未设置或短于 32 位。在面板环境变量中补上后重启 Node 进程。
+
+### 登录报 429 登录尝试过多
+
+连续失败 5 次会触发 15 分钟限流。等待 15 分钟，或重启 Node 进程立即解除。
+
+### 构建产物启动即报 file:///_entry.js
+
+症状：`node .output/server/index.mjs` 立即退出，报
+`TypeError: The argument 'filename' must be a file URL object...Received 'file:///_entry.js'`。
+
+原因是 `@nuxt/icon` 生成的图标加载代码走了运行时 `require` 分支，而该分支依赖的
+`globalThis._importMeta_.url` 在共享 chunk 中尚未赋值。触发条件是**构建时 `nuxt.options.dev`
+被判为真**（最常见于 `pnpm dev` 同时占用同一个 `.nuxt` 目录的情况下执行 `pnpm build`）。
+
+处理：
+
+```bash
+# 先停掉开发服务器，确认没有 dev 进程占用端口
+rm -rf .output .nuxt
+pnpm build
+```
+
+### 更新上传的图片前
+
+`public/uploads/` 是指向项目外部目录的软链接时，重新部署不会影响它；若不是软链接，
+则每次覆盖 `.output` 都会丢掉线上新增的图片，务必先备份。
+

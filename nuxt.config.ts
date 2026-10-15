@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     adminPassword: process.env.ADMIN_PASSWORD || '',
     baiduTranslateAppId: process.env.BAIDU_TRANSLATE_APP_ID || '',
     baiduTranslateSecretKey: process.env.BAIDU_TRANSLATE_SECRET_KEY || '',
+    // 管理后台会话 cookie 的 secure 标记。默认在生产环境要求 HTTPS；
+    // 只有在域名尚未启用 HTTPS 时才临时设为 false，备案完成后应删除该变量。
+    cookieSecure: process.env.NUXT_COOKIE_SECURE !== 'false',
     public: {
       amapKey: process.env.NUXT_PUBLIC_AMAP_KEY || '',
       amapSecurityCode: process.env.NUXT_PUBLIC_AMAP_SECURITY_CODE || ''

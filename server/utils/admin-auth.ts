@@ -98,10 +98,15 @@ export function assertSameOrigin(event: H3Event) {
 
 export function setAdminSession(event: H3Event, session: Omit<AdminSession, 'exp'>) {
   const payload = encode(JSON.stringify({ ...session, exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS }))
+  // 是否要求 HTTPS 下才发送 cookie。默认按生产环境判断；
+  // 域名备案尚未完成、暂时只能走 HTTP 时，可设 NUXT_COOKIE_SECURE=false 放行，
+  // 备案并启用 HTTPS 后应删除该变量，恢复默认的强制 HTTPS。
+  const configured = useRuntimeConfig().cookieSecure
+  const secure = configured === undefined ? process.env.NODE_ENV === 'production' : Boolean(configured)
   setCookie(event, SESSION_COOKIE, `${payload}.${sign(payload)}`, {
     httpOnly: true,
     sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
+    secure,
     path: '/',
     maxAge: SESSION_TTL_SECONDS
   })
