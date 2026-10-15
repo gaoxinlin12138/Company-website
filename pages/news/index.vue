@@ -51,7 +51,7 @@ watch(() => route.query.category, value => {
 
 <template>
   <div class="page page-news">
-    <PageHero class="page-hero--inner" title="新闻动态" subtitle="记录公司进展，也关注行业变化" image="/assets/images/hero-news-bamboo-wash.webp" split-text />
+    <PageHero class="page-hero--inner" :title="t('新闻动态')" :subtitle="t('记录公司进展，也关注行业变化')" image="/assets/images/hero-news-bamboo-wash.webp" split-text />
     <section id="news-list" class="news-directory section-space">
       <div class="page-wrap news-directory__layout">
         <aside class="news-directory__aside" :aria-label="t('新闻分类')">

@@ -16,7 +16,8 @@ function mapNumber(value: unknown, fallback: number) {
 }
 
 function amapMarkerUrl(longitude: number, latitude: number) {
-  return `https://uri.amap.com/marker?position=${longitude.toFixed(6)},${latitude.toFixed(6)}&name=${encodeURIComponent('公司位置')}`
+  const name = language.value === 'en' ? 'Hongcai Wanfu location' : '公司位置'
+  return `https://uri.amap.com/marker?position=${longitude.toFixed(6)},${latitude.toFixed(6)}&name=${encodeURIComponent(name)}`
 }
 
 const mapLocation = computed(() => {

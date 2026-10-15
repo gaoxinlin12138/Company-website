@@ -2,6 +2,21 @@ export type SiteLanguage = 'zh' | 'en'
 
 export const SITE_LANGUAGE_KEY = 'hongcai_language'
 
+/** 首次访问（无 cookie、无本地记录）时使用的语言。 */
+export const defaultSiteLanguage: SiteLanguage = 'en'
+
+/**
+ * 解析访客语言。优先级：本地记录 > cookie > 默认值。
+ * 只有明确记录为 'zh' 才用中文，其余一律默认英文。
+ */
+export function resolveStoredLanguage(
+  stored: string | null | undefined,
+  cookieValue: string | null | undefined
+): SiteLanguage {
+  const candidate = stored || cookieValue
+  return candidate === 'zh' ? 'zh' : defaultSiteLanguage
+}
+
 const english: Record<string, string> = {
   '首页': 'Home',
   '产品中心': 'Products',
@@ -228,6 +243,10 @@ const english: Record<string, string> = {
   '提供项目需求\n获取针对性的产品方案与报价': 'Share project requirements\nand request a tailored product proposal and quote',
   '搜索': 'Search',
   '关闭搜索': 'Close search',
+  '产品系列轮播': 'Product series carousel',
+  '轮播控制': 'Carousel controls',
+  '产品图片': 'Product image',
+  '红财万富 HONGCAI WANFU': 'Hongcai Wanfu',
   '打开导航': 'Open navigation',
   '关闭导航': 'Close navigation',
   '主导航': 'Main navigation',
@@ -253,11 +272,11 @@ const english: Record<string, string> = {
 
 export function useSiteLanguage() {
   const languageCookie = useCookie<SiteLanguage>(SITE_LANGUAGE_KEY, {
-    default: () => 'zh',
+    default: () => defaultSiteLanguage,
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 365
   })
-  const language = useState<SiteLanguage>('site-language', () => languageCookie.value === 'en' ? 'en' : 'zh')
+  const language = useState<SiteLanguage>('site-language', () => resolveStoredLanguage(null, languageCookie.value))
 
   useHead(() => ({ htmlAttrs: { lang: language.value === 'en' ? 'en' : 'zh-CN' } }))
 

@@ -28,7 +28,7 @@ useSeoMeta({
 
 <template>
   <div v-if="article" class="page page-news-article">
-    <PageHero class="page-hero--inner" title="新闻动态" subtitle="记录公司进展，也关注行业变化" image="/assets/images/hero-basin-concept.webp" split-text />
+    <PageHero class="page-hero--inner" :title="t('新闻动态')" :subtitle="t('记录公司进展，也关注行业变化')" image="/assets/images/hero-basin-concept.webp" split-text />
     <main class="news-article section-space">
       <article class="page-wrap news-article__paper">
         <nav class="news-article__trail" :aria-label="language === 'en' ? 'Breadcrumb' : '面包屑导航'">

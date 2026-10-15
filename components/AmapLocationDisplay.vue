@@ -9,6 +9,8 @@ const props = defineProps<{
   errorText: string
 }>()
 
+const { language } = useSiteLanguage()
+
 const mapElement = ref<HTMLElement | null>(null)
 const status = ref<'loading' | 'ready' | 'error'>('loading')
 const errorMessage = ref('')
@@ -47,7 +49,7 @@ onBeforeUnmount(() => map?.destroy())
     <div ref="mapElement" class="amap-location-display__canvas"></div>
     <span class="location-map__shade" aria-hidden="true"></span>
     <span class="location-map__marker" aria-hidden="true"><span class="location-map__pin"><Icon name="lucide:map-pin" /></span><span class="location-map__label">{{ label }}</span></span>
-    <span v-if="status === 'loading'" class="amap-location-display__state">地图加载中…</span>
+    <span v-if="status === 'loading'" class="amap-location-display__state">{{ language === 'en' ? 'Loading map…' : '地图加载中…' }}</span>
     <span v-else-if="status === 'error'" class="amap-location-display__state is-error">{{ errorMessage }}</span>
     <a class="location-map__open" :href="link" target="_blank" rel="noopener noreferrer"><Icon name="lucide:external-link" />{{ openText }}</a>
   </div>
