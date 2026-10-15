@@ -288,10 +288,14 @@
   .site-shell .site-nav__link:hover { color: var(--red); background: rgba(229,240,235,.5); }
 }
 
+/* 导航栏三列等宽弹性 + 中间列按内容宽度，导航项才会真正落在页面中线上。
+   早先中间列用 1fr 会吃掉全部剩余空间，窄视口下导航整体偏左最多约 240px。 */
+.site-shell .site-nav__inner { grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr); }
+
 @media (min-width: 1121px) and (max-width: 1440px) {
   .site-shell .site-nav__brand { transform: none; }
   .site-shell .site-nav__brand > span { display: none; }
-  .site-shell .site-nav__inner { grid-template-columns: auto 1fr auto; gap: 1rem; }
+  .site-shell .site-nav__inner { grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr); gap: 1rem; }
   .site-shell .site-nav__link { min-width: 0; padding-inline: .7rem; }
 }
 @media (max-width: 720px) {
