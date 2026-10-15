@@ -32,7 +32,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Guest rooms, suites and shared areas',
     products: '面盆龙头、花洒套装、地漏、卫浴挂件',
     productsEn: 'Basin faucets, shower sets, drains and bathroom accessories',
-    image: '/uploads/cases/concept-hospitality.webp'
+    image: '/assets/images/cases/concept-hospitality.webp'
   },
   {
     id: 'fixed-commercial-case',
@@ -49,7 +49,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Public washrooms and amenity zones',
     products: '面盆龙头、角阀、地漏、排水及安装配件',
     productsEn: 'Basin faucets, angle valves, drains and installation parts',
-    image: '/uploads/cases/concept-commercial.webp'
+    image: '/assets/images/cases/concept-commercial.webp'
   },
   {
     id: 'fixed-residential-case',
@@ -66,7 +66,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Master bath, guest bath and kitchen',
     products: '面盆龙头、淋浴花洒、厨房龙头、卫浴挂件',
     productsEn: 'Basin faucets, shower systems, kitchen faucets and bathroom accessories',
-    image: '/uploads/cases/concept-residential.webp'
+    image: '/assets/images/cases/concept-residential.webp'
   },
   {
     id: 'fixed-workplace-case',
@@ -83,7 +83,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Shared and client-facing zones',
     products: '水龙头、角阀、地漏、挂件与安装配件',
     productsEn: 'Faucets, angle valves, drains, accessories and installation parts',
-    image: '/uploads/cases/concept-workplace.webp'
+    image: '/assets/images/cases/concept-workplace.webp'
   },
   {
     id: 'fixed-resort-spa-case',
@@ -100,7 +100,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'View rooms, private bathing zones and spa spaces',
     products: '浴缸龙头、恒温淋浴、手持花洒、地漏与配套五金',
     productsEn: 'Bath fillers, thermostatic showers, hand showers, drains and coordinated hardware',
-    image: '/uploads/cases/concept-resort-spa.webp'
+    image: '/assets/images/cases/concept-resort-spa.webp'
   },
   {
     id: 'fixed-serviced-apartment-case',
@@ -117,7 +117,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Studios, one-bedroom units and standard suites',
     products: '壁挂面盆龙头、淋浴套装、置物五金、角阀与排水配件',
     productsEn: 'Wall-mounted basin faucets, shower sets, storage hardware, angle valves and drainage parts',
-    image: '/uploads/cases/concept-serviced-apartment.webp'
+    image: '/assets/images/cases/concept-serviced-apartment.webp'
   },
   {
     id: 'fixed-campus-case',
@@ -134,7 +134,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Washrooms in teaching buildings, libraries and activity centres',
     products: '节水龙头、感应类选型、角阀、地漏与无障碍配件',
     productsEn: 'Water-saving faucets, sensor-ready options, angle valves, drains and accessible accessories',
-    image: '/uploads/cases/concept-campus.webp'
+    image: '/assets/images/cases/concept-campus.webp'
   },
   {
     id: 'fixed-wellness-club-case',
@@ -151,7 +151,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Changing areas, private showers and wet-zone circulation',
     products: '恒温阀、顶喷与手持花洒、线性地漏、挂件及检修配件',
     productsEn: 'Thermostatic valves, overhead and hand showers, linear drains, accessories and service parts',
-    image: '/uploads/cases/concept-wellness-club.webp'
+    image: '/assets/images/cases/concept-wellness-club.webp'
   },
   {
     id: 'fixed-compact-home-case',
@@ -168,7 +168,7 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Compact master baths, guest baths and renovation layouts',
     products: '紧凑型面盆龙头、升降花洒、墙面挂件、地漏与角阀',
     productsEn: 'Compact basin faucets, rail showers, wall accessories, drains and angle valves',
-    image: '/uploads/cases/concept-compact-home.webp'
+    image: '/assets/images/cases/concept-compact-home.webp'
   },
   {
     id: 'fixed-family-bathroom-case',
@@ -185,21 +185,21 @@ export const caseStudies: CaseItem[] = [
     locationEn: 'Family master baths, children’s bathrooms and shared vanity zones',
     products: '双台盆龙头、防烫淋浴、浴缸龙头、扶手与收纳挂件',
     productsEn: 'Double-basin faucets, anti-scald showers, bath fillers, grab bars and storage accessories',
-    image: '/uploads/cases/concept-family-bathroom.webp'
+    image: '/assets/images/cases/concept-family-bathroom.webp'
   }
 ]
 
 export const caseImageDimensions: Record<string, { width: number; height: number }> = {
-  '/uploads/cases/concept-hospitality.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-commercial.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-residential.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-workplace.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-resort-spa.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-serviced-apartment.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-campus.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-wellness-club.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-compact-home.webp': { width: 1254, height: 1254 },
-  '/uploads/cases/concept-family-bathroom.webp': { width: 1254, height: 1254 }
+  '/assets/images/cases/concept-hospitality.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-commercial.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-residential.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-workplace.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-resort-spa.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-serviced-apartment.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-campus.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-wellness-club.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-compact-home.webp': { width: 1254, height: 1254 },
+  '/assets/images/cases/concept-family-bathroom.webp': { width: 1254, height: 1254 }
 }
 
 export const getCaseImageDimensions = (image: string) => caseImageDimensions[image] || { width: 1600, height: 1066 }

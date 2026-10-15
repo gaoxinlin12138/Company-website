@@ -31,3 +31,11 @@ Thumbs.db
 # Internal backups and design-tool metadata
 .design-backups/
 .impeccable/
+
+# Uploaded media. Kept out of version control so that public/uploads can be a
+# symlink to a directory outside the project (e.g. /www/wwwroot/data). Tracking
+# files here makes git checkout / reset --hard / restore recreate them as real
+# files, which would overwrite the symlink and break the deployment layout.
+# Demo images the site ships with live in public/assets/images/ instead.
+public/uploads/
+public/uploads.before-data-migration/

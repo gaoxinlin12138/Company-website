@@ -145,22 +145,39 @@ pnpm build
 
 以下几条来自实际线上部署的经验，换服务器或交接时请一并交代。
 
-### 不要在这台服务器上执行 git 的还原类命令
+### 关于 git 还原类命令
 
-若 `public/uploads/` 已改为指向项目外部目录（如 `/www/wwwroot/data`）的软链接，
-而这些图片文件仍在 git 跟踪范围内，`git status` 会把它们显示为已删除（`D`）。
+仓库**已不再跟踪 `public/uploads/`**（见 `.gitignore`），因此在新克隆的机器上，
+`git checkout .` / `git reset --hard` / `git restore` / `git clean -fd` 都是安全的，
+不会破坏软链接。
 
-此时执行下面任何一条命令，都会把这些图片**重新创建成真实文件**，从而覆盖软链接、
-或在软链接目标里写入重复文件：
+但**若某台服务器是在这一改动之前部署的**，它的 git 记录里仍跟踪着旧的上传文件，
+那么 `git status` 会把 `public/uploads` 显示为已删除，此时执行上述命令会把这些
+文件重新创建为真实文件、覆盖软链接。遇到这种旧部署，先确认 `git status` 里是否
+还有 `public/uploads/...` 的 `D` 记录再决定。
+
+`public/uploads.before-data-migration/` 是某次迁移留下的备份目录，确认无用前不要删除。
+
+### 上传文件与仓库自带图片的区别
+
+| 类别 | 位置 | 是否入库 git |
+| --- | --- | --- |
+| 网站自带的演示图片（案例配图、关于我们配图等） | `public/assets/images/` | ✅ 入库 |
+| 后台后传的图片与 PDF | `public/uploads/` → 软链接到 `/www/wwwroot/data` | ❌ 不入库 |
+
+`public/uploads/` 下只保留 `.gitkeep` 占位，用来确保目录存在。**不要把上传文件提交
+到 git**——这正是让 `public/uploads` 能安全地做成软链接的前提。
+
+若演示图片的存放位置发生迁移（例如从 `public/uploads/` 移到 `public/assets/images/`），
+数据库 `site_settings` 中记录的路径也需要同步更新，否则前台会请求已不存在的旧路径：
 
 ```bash
-git checkout .        # 不要执行
-git reset --hard      # 不要执行
-git restore .         # 不要执行
-git clean -fd         # 不要执行
+node scripts/fix-upload-paths.mjs           # 预览
+node scripts/fix-upload-paths.mjs --apply   # 写入
 ```
 
-`public/uploads.before-data-migration/` 是迁移前的备份目录，**不要删除**。
+脚本只替换图片路径字符串，不改动任何文字内容。
+
 
 ### 代码更新方式：逐个文件下载
 

@@ -26,7 +26,7 @@ const scenarios: Scenario[] = [
       zh: '酒店项目需要同时平衡空间气质、使用舒适度、批量采购效率与长期维护。我们从标准客房、套房和公共区域的差异出发，梳理统一的表面处理与产品语言，再根据房型调整功能组合，让整体效果保持一致。',
       en: 'Hospitality projects must balance atmosphere, comfort, procurement efficiency and long-term maintenance. We align finishes and product language across standard rooms, suites and shared areas, then adapt the functional mix to each room type.'
     },
-    image: '/uploads/cases/concept-hospitality.webp',
+    image: '/assets/images/cases/concept-hospitality.webp',
     imageAlt: { zh: '酒店卫浴空间应用方案示意', en: 'Illustrative hospitality bathroom sourcing direction' },
     details: [
       { label: { zh: '核心需求', en: 'Project need' }, value: { zh: '多房型统一、舒适体验、易清洁维护', en: 'Consistency across room types, guest comfort and easy maintenance' } },
@@ -42,7 +42,7 @@ const scenarios: Scenario[] = [
       zh: '商业综合体、展厅和公共卫生间的使用频次更高，产品选型不能只看外观。方案会优先核对使用强度、清洁方式、安装条件与后续检修路径，再统一龙头、阀门和配件的规格关系，减少现场临时调整。',
       en: 'Retail, showroom and public washroom environments demand more than visual appeal. Selection starts with usage intensity, cleaning routines, installation conditions and service access, followed by coordinated faucet, valve and accessory specifications.'
     },
-    image: '/uploads/cases/concept-commercial.webp',
+    image: '/assets/images/cases/concept-commercial.webp',
     imageAlt: { zh: '商业公共空间龙头应用方案示意', en: 'Illustrative faucet direction for commercial public spaces' },
     details: [
       { label: { zh: '核心需求', en: 'Project need' }, value: { zh: '高频使用、快速清洁、稳定补货', en: 'High-frequency use, efficient cleaning and reliable replenishment' } },
@@ -58,7 +58,7 @@ const scenarios: Scenario[] = [
       zh: '住宅精装更关注成套感、空间适配与日常使用的细节。我们按主卫、客卫、厨房等不同区域拆分需求，通过统一材质和表面处理控制整体观感，同时为台面开孔、墙内预埋和收口尺寸保留充分核对时间。',
       en: 'Residential fit-out places greater emphasis on coordinated aesthetics, spatial fit and everyday details. Requirements are separated by master bath, guest bath and kitchen, while finishes stay consistent and installation dimensions are checked early.'
     },
-    image: '/uploads/cases/concept-residential.webp',
+    image: '/assets/images/cases/concept-residential.webp',
     imageAlt: { zh: '住宅精装面盆龙头应用方案示意', en: 'Illustrative basin-faucet direction for residential fit-out' },
     details: [
       { label: { zh: '核心需求', en: 'Project need' }, value: { zh: '风格统一、户型适配、使用顺手', en: 'A consistent look, layout compatibility and intuitive daily use' } },
@@ -74,7 +74,7 @@ const scenarios: Scenario[] = [
       zh: '办公空间的卫浴配置需要融入整体室内语言，也要控制维护复杂度。选型以简洁耐看的外观、清晰的功能和常用规格为主，重点处理公共区域与管理层空间之间的配置差异，避免不必要的型号分散。',
       en: 'Workplace bathrooms should support the interior language without adding maintenance complexity. Selection favours restrained forms, clear functionality and common specifications, with controlled upgrades for executive or client-facing areas.'
     },
-    image: '/uploads/cases/concept-workplace.webp',
+    image: '/assets/images/cases/concept-workplace.webp',
     imageAlt: { zh: '商务办公卫浴五金材质方案示意', en: 'Illustrative bathroom hardware and material direction for workplaces' },
     details: [
       { label: { zh: '核心需求', en: 'Project need' }, value: { zh: '简洁耐看、维护可控、不同区域协调', en: 'Timeless appearance, manageable maintenance and coordination across zones' } },

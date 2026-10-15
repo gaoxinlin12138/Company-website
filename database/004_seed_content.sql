@@ -187,7 +187,7 @@ VALUES ('12876f053eaf5ee3296a72e7bd5c25e9', '商业综合体场景', 'Commercial
   '页面示例摘要，正式资料待补充。', 'Page sample summary; final project materials to be added.', '页面示例资料，正式内容待补充。', 'Page sample content; final project materials to be added.',
   '商业空间', '商业空间', '待填写', 'To be filled',
   '龙头、卫浴挂件、五金配件', '龙头、卫浴挂件、五金配件',
-  '/uploads/cases/concept-commercial.webp', 'DRAFT', 0)
+  '/assets/images/cases/concept-commercial.webp', 'DRAFT', 0)
 ON DUPLICATE KEY UPDATE
   title_zh = VALUES(title_zh), title_en = VALUES(title_en), category_id = VALUES(category_id),
   summary_zh = VALUES(summary_zh), summary_en = VALUES(summary_en),
@@ -203,7 +203,7 @@ VALUES ('e1b7d5bd54edf7a7fcd962d0c6f28067', '酒店卫浴配套场景', 'Hotel b
   '页面示例摘要，正式资料待补充。', 'Page sample summary; final project materials to be added.', '页面示例资料，正式内容待补充。', 'Page sample content; final project materials to be added.',
   '酒店空间', '酒店空间', '待填写', 'To be filled',
   '淋浴五金、卫浴挂件、地漏', '淋浴五金、卫浴挂件、地漏',
-  '/uploads/cases/concept-hospitality.webp', 'DRAFT', 0)
+  '/assets/images/cases/concept-hospitality.webp', 'DRAFT', 0)
 ON DUPLICATE KEY UPDATE
   title_zh = VALUES(title_zh), title_en = VALUES(title_en), category_id = VALUES(category_id),
   summary_zh = VALUES(summary_zh), summary_en = VALUES(summary_en),
@@ -219,7 +219,7 @@ VALUES ('cc8a415f4764a5ab3ce34fca8a19f386', '现代公共空间卫浴项目', 'M
   '页面示例摘要，正式资料待补充。', 'Page sample summary; final project materials to be added.', '页面示例资料，正式内容待补充。', 'Page sample content; final project materials to be added.',
   '公共空间', '公共空间', '待填写', 'To be filled',
   '卫浴五金、感应龙头、挂件、阀门配件', '卫浴五金、感应龙头、挂件、阀门配件',
-  '/uploads/cases/concept-commercial.webp', 'DRAFT', 0)
+  '/assets/images/cases/concept-commercial.webp', 'DRAFT', 0)
 ON DUPLICATE KEY UPDATE
   title_zh = VALUES(title_zh), title_en = VALUES(title_en), category_id = VALUES(category_id),
   summary_zh = VALUES(summary_zh), summary_en = VALUES(summary_en),
@@ -235,7 +235,7 @@ VALUES ('0b323351513422e51e647d154bf9e04c', '办公空间场景', 'Office space 
   '页面示例摘要，正式资料待补充。', 'Page sample summary; final project materials to be added.', '页面示例资料，正式内容待补充。', 'Page sample content; final project materials to be added.',
   '办公空间', '办公空间', '待填写', 'To be filled',
   '水龙头、卫浴挂件、五金配件', '水龙头、卫浴挂件、五金配件',
-  '/uploads/cases/concept-workplace.webp', 'DRAFT', 0)
+  '/assets/images/cases/concept-workplace.webp', 'DRAFT', 0)
 ON DUPLICATE KEY UPDATE
   title_zh = VALUES(title_zh), title_en = VALUES(title_en), category_id = VALUES(category_id),
   summary_zh = VALUES(summary_zh), summary_en = VALUES(summary_en),
@@ -251,7 +251,7 @@ VALUES ('23e2c8a444f763439fa35d75d73dac49', '住宅精装场景', 'Residential f
   '页面示例摘要，正式资料待补充。', 'Page sample summary; final project materials to be added.', '页面示例资料，正式内容待补充。', 'Page sample content; final project materials to be added.',
   '住宅空间', '住宅空间', '待填写', 'To be filled',
   '淋浴五金、卫浴挂件、开关面板', '淋浴五金、卫浴挂件、开关面板',
-  '/uploads/cases/concept-residential.webp', 'DRAFT', 0)
+  '/assets/images/cases/concept-residential.webp', 'DRAFT', 0)
 ON DUPLICATE KEY UPDATE
   title_zh = VALUES(title_zh), title_en = VALUES(title_en), category_id = VALUES(category_id),
   summary_zh = VALUES(summary_zh), summary_en = VALUES(summary_en),
