@@ -216,7 +216,17 @@ rm -rf .output .nuxt && pnpm build
 | 构建产物 | `.output/` | 由 `pnpm build` 生成，可直接删除重建 |
 
 `.env` 的常见书写错误会导致变量静默失效：等号两边有空格、两个变量挤在同一行、
-行尾带 Windows 换行符。改完可用下面这条检查（不显示值）：
+行尾带 Windows 换行符。出现「明明填了却读不到」时，先用规范化脚本检查：
+
+```bash
+node scripts/format-env.mjs            # 预览：列出问题，并显示规范后的结构（值不显示）
+node scripts/format-env.mjs --write    # 确认后写入，自动生成 .env.bak 备份
+```
+
+脚本处理 BOM、CRLF、等号旁空格、变量粘连、行尾空白、连续空行，并提示重复定义的键。
+它只调整格式，不改变键名与值的内容；若解析不出任何变量会拒绝写入。
+
+想快速人工核对时也可以用：
 
 ```bash
 grep -n -E '^[A-Z]' .env | sed 's/=.*/=<已填写>/' | cat -A
