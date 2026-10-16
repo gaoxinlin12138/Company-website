@@ -14,10 +14,10 @@
  * 只替换图片路径字符串，不改动任何文字内容。
  */
 
-import { readFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { createRequire } from 'node:module'
+import { resolveDatabaseUrl, printDatabaseUrlHelp } from './lib/env-database.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
@@ -35,37 +35,9 @@ const REPLACEMENTS = [
 const SETTING_KEYS = ['about', 'contact', 'product-catalogue', 'home-products', 'social-contact']
 
 /* ---------- 数据库连接 ---------- */
-/**
- * 从 .env 读取 DATABASE_URL。
- * 实际部署中发现该文件的格式存在多种写法（BOM、行首空格、export 前缀、
- * 引号、Windows 换行，甚至两个变量被意外写在同一行），因此这里用宽松匹配：
- * 先定位 DATABASE_URL 的位置，再取其后的第一个 = 作为赋值处。
- */
-function readDatabaseUrlFromEnvFile(file) {
-  if (!existsSync(file)) return null
-  let text = readFileSync(file, 'utf8')
-  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1)
-
-  for (const line of text.split(/\r?\n/)) {
-    if (/^\s*#/.test(line)) continue
-    const at = line.indexOf('DATABASE_URL')
-    if (at < 0) continue
-    // 从变量名之后找赋值等号；若前面误粘了别的变量，也能正确定位
-    const eq = line.indexOf('=', at + 'DATABASE_URL'.length)
-    if (eq < 0) continue
-    let value = line.slice(eq + 1).trim()
-    value = value.replace(/^["']+/, '').replace(/["']+$/, '').trim()
-    value = value.replace(/\s+#.*$/, '').trim()
-    if (/^mysql:\/\//i.test(value)) return value
-  }
-  return null
-}
-const dbUrl = wantUrl || process.env.DATABASE_URL || readDatabaseUrlFromEnvFile(join(root, '.env')) || readDatabaseUrlFromEnvFile(join(root, '.output/.env'))
+const dbUrl = resolveDatabaseUrl(wantUrl, root)
 if (!dbUrl) {
-  console.error('✗ 找不到数据库连接。可用 --url 直接传入，例如：')
-  console.error('  node scripts/fix-upload-paths.mjs --apply --url "$DBURL"')
-  console.error('  其中 DBURL 可用这条命令取得（不显示密码）：')
-  console.error("  DBURL=\"$(grep -m1 'DATABASE_URL' .env | cut -d= -f2- | tr -d '\\\"' | tr -d \"'\" | tr -d '\\r')\"")
+  printDatabaseUrlHelp()
   process.exit(1)
 }
 

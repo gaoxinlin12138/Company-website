@@ -19,8 +19,9 @@
 
 import { randomBytes, scrypt as scryptCallback } from 'node:crypto'
 import { promisify } from 'node:util'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { resolveDatabaseUrl, printDatabaseUrlHelp } from './lib/env-database.mjs'
 
 const scrypt = promisify(scryptCallback)
 
@@ -39,18 +40,9 @@ if (args.includes('--help') || args.includes('-h')) {
 }
 
 /* ---------- 读取数据库连接 ---------- */
-function fromEnvFile(file) {
-  if (!existsSync(file)) return null
-  const lines = readFileSync(file, 'utf8').split(/\r?\n/)
-  for (const line of lines) {
-    const m = line.match(/^\s*DATABASE_URL\s*=\s*(.*)$/)
-    if (m) return m[1].trim().replace(/^["']|["']$/g, '')
-  }
-  return null
-}
-const dbUrl = wantUrl || process.env.DATABASE_URL || fromEnvFile('.env') || fromEnvFile('.output/.env')
+const dbUrl = resolveDatabaseUrl(wantUrl)
 if (!dbUrl) {
-  console.error('✗ 找不到数据库连接。请用 --url 指定，或在项目根目录 .env 中设置 DATABASE_URL。')
+  printDatabaseUrlHelp()
   process.exit(1)
 }
 
