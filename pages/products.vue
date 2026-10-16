@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { productCategorySections, type ProductItem } from '~/data/site'
-import { defaultProductCatalogueContent, type ProductCatalogueContent } from '~/data/site-content'
+import { defaultContactContent, defaultProductCatalogueContent, type ContactContent, type ProductCatalogueContent } from '~/data/site-content'
 
 const { language, t } = useSiteLanguage()
 useSeoMeta({
@@ -16,6 +16,8 @@ const { data: publishedProducts, error: productsError, status: productsStatus } 
 // An empty database result is an empty catalogue, not a request for demo content.
 const products = computed<ProductViewItem[]>(() => productsError.value ? [] : publishedProducts.value || [])
 const { data: catalogueContent } = await useFetch<ProductCatalogueContent>('/api/content/product-catalogue', { default: () => defaultProductCatalogueContent })
+// 隐私告知文案与联系页同源（后台可改）
+const { data: contactContent } = await useFetch<ContactContent>('/api/content/contact', { default: () => defaultContactContent })
 
 const catalogueSections: Array<{ key: ProductSectionKey; label: string; group: string; icon: string; categories: string[] }> = productCategorySections.map(section => ({
   ...section,
@@ -34,8 +36,10 @@ const productsPerPage = 8
 const expandedSections = reactive<Record<ProductSectionKey, boolean>>({ sanitaryware: true, hardware: true, installation: true })
 const inquirySubmitted = ref(false)
 const inquiryPromptVisible = ref(false)
-const inquiryFieldErrors = reactive({ name: '', company: '', phone: '', product: '' })
-const inquiry = reactive({ name: '', company: '', phone: '', product: '' })
+const inquirySubmitting = ref(false)
+const inquirySubmitError = ref('')
+const inquiryFieldErrors = reactive({ name: '', company: '', email: '', phone: '', product: '' })
+const inquiry = reactive({ name: '', company: '', email: '', phone: '', product: '' })
 
 function sectionFromQuery(value: unknown): CatalogueSectionKey {
   const group = Array.isArray(value) ? value[0] : value
@@ -140,13 +144,14 @@ function startInquiry(item?: ProductViewItem) {
   void nextTick(() => document.getElementById('inquiry-name')?.focus())
 }
 
-function clearInquiryError(field: 'name' | 'company' | 'phone' | 'product') {
+function clearInquiryError(field: 'name' | 'company' | 'email' | 'phone' | 'product') {
   inquiryFieldErrors[field] = ''
 }
 
 function validateInquiry() {
   const name = inquiry.name.trim()
   const company = inquiry.company.trim()
+  const email = inquiry.email.trim()
   const phone = inquiry.phone.trim()
 
   inquiryFieldErrors.name = !name
@@ -159,6 +164,11 @@ function validateInquiry() {
     : company.length < 2 || company.length > 80
       ? t('公司名称需填写 2–80 个字符。')
       : ''
+  inquiryFieldErrors.email = !email
+    ? t('请填写邮箱。')
+    : email.length > 120 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
+      ? t('请输入有效的邮箱地址。')
+      : ''
   const phoneDigits = phone.replace(/\D/g, '')
   inquiryFieldErrors.phone = !phone
     ? t('请填写联系电话。')
@@ -170,19 +180,44 @@ function validateInquiry() {
   return !Object.values(inquiryFieldErrors).some(Boolean)
 }
 
-function submitInquiry() {
-  if (import.meta.client) {
-    const existing = JSON.parse(localStorage.getItem('hongcai_inquiries') || '[]')
-    existing.unshift({ ...inquiry, source: 'product-centre', createdAt: new Date().toISOString(), status: 'new' })
-    localStorage.setItem('hongcai_inquiries', JSON.stringify(existing))
+async function submitInquiry() {
+  inquirySubmitError.value = ''
+  // 产品页没有"采购方向"字段，用产品分类补足 interest，保持与后台展示口径一致
+  const product = inquiry.product.trim()
+  const interest = `${t('产品中心')} / ${product}`.slice(0, 120)
+
+  try {
+    await $fetch('/api/inquiries', {
+      method: 'POST',
+      body: {
+        name: inquiry.name.trim(),
+        company: inquiry.company.trim(),
+        email: inquiry.email.trim(),
+        phone: inquiry.phone.trim(),
+        interest,
+        message: `${t('感兴趣的产品')}：${product}`.slice(0, 4000),
+        source: 'product-centre'
+      }
+    })
+    inquirySubmitted.value = true
+    inquiryPromptVisible.value = false
+    Object.assign(inquiry, { name: '', company: '', email: '', phone: '', product: '' })
+    Object.keys(inquiryFieldErrors).forEach(field => { inquiryFieldErrors[field as keyof typeof inquiryFieldErrors] = '' })
+  } catch (error: any) {
+    inquirySubmitError.value = error?.data?.statusMessage
+      || (language.value === 'en' ? 'Submission failed. Please try again.' : '提交失败，请稍后重试。')
   }
-  inquirySubmitted.value = true
-  inquiryPromptVisible.value = false
 }
 
-function handleInquirySubmit() {
+async function handleInquirySubmit() {
+  inquirySubmitted.value = false
   if (!validateInquiry()) return
-  submitInquiry()
+  inquirySubmitting.value = true
+  try {
+    await submitInquiry()
+  } finally {
+    inquirySubmitting.value = false
+  }
 }
 </script>
 
@@ -291,11 +326,14 @@ function handleInquirySubmit() {
           <form novalidate @submit.prevent="handleInquirySubmit">
             <label for="inquiry-name">{{ t('姓名 *') }}<input id="inquiry-name" name="name" v-model="inquiry.name" required minlength="2" maxlength="30" autocomplete="name" :aria-invalid="Boolean(inquiryFieldErrors.name)" :placeholder="t('请输入姓名')" @input="clearInquiryError('name')"><small class="quick-inquiry__hint">{{ t('姓名需填写 2–30 个中文或英文字符。') }}</small><small v-if="inquiryFieldErrors.name" class="quick-inquiry__field-error">{{ inquiryFieldErrors.name }}</small></label>
             <label for="inquiry-company">{{ t('公司 *') }}<input id="inquiry-company" name="company" v-model="inquiry.company" required minlength="2" maxlength="80" autocomplete="organization" :aria-invalid="Boolean(inquiryFieldErrors.company)" :placeholder="t('请输入公司名称')" @input="clearInquiryError('company')"><small class="quick-inquiry__hint">{{ t('公司名称需填写 2–80 个字符。') }}</small><small v-if="inquiryFieldErrors.company" class="quick-inquiry__field-error">{{ inquiryFieldErrors.company }}</small></label>
+            <label for="inquiry-email">{{ t('邮箱 *') }}<input id="inquiry-email" name="email" v-model="inquiry.email" type="email" required maxlength="120" autocomplete="email" :aria-invalid="Boolean(inquiryFieldErrors.email)" :placeholder="t('请输入邮箱')" @input="clearInquiryError('email')"><small class="quick-inquiry__hint">{{ t('用于接收报价与产品资料。') }}</small><small v-if="inquiryFieldErrors.email" class="quick-inquiry__field-error">{{ inquiryFieldErrors.email }}</small></label>
             <label for="inquiry-phone">{{ t('电话 / WhatsApp *') }}<input id="inquiry-phone" name="phone" v-model="inquiry.phone" required maxlength="20" inputmode="tel" autocomplete="tel" :aria-invalid="Boolean(inquiryFieldErrors.phone)" :placeholder="t('请输入联系电话')" @input="clearInquiryError('phone')"><small class="quick-inquiry__hint">{{ t('联系电话需填写 7–15 位数字，可包含 +、空格、括号或短横线。') }}</small><small v-if="inquiryFieldErrors.phone" class="quick-inquiry__field-error">{{ inquiryFieldErrors.phone }}</small></label>
             <label for="inquiry-product">{{ t('感兴趣的产品 *') }}<input id="inquiry-product" name="product" v-model="inquiry.product" list="inquiry-products" required :aria-invalid="Boolean(inquiryFieldErrors.product)" :placeholder="t('搜索或选择产品')" @input="clearInquiryError('product')"><small v-if="inquiryFieldErrors.product" class="quick-inquiry__field-error">{{ inquiryFieldErrors.product }}</small></label>
             <datalist id="inquiry-products"><option v-for="option in productOptions" :key="option" :value="option"></option></datalist>
-            <button type="submit"><Icon name="lucide:send" />{{ t('提交询价') }}</button>
-            <small v-if="inquirySubmitted" class="quick-inquiry__success">{{ t('询价已提交，我们会尽快与您联系。') }}</small>
+            <button type="submit" :disabled="inquirySubmitting"><Icon :name="inquirySubmitting ? 'lucide:loader-circle' : 'lucide:send'" :class="{ 'is-spinning': inquirySubmitting }" />{{ inquirySubmitting ? t('提交中…') : t('提交询价') }}</button>
+            <p v-if="inquirySubmitted" class="quick-inquiry__success" role="status"><Icon name="lucide:circle-check" /><span><strong>{{ t('询价已提交成功') }}</strong>{{ t('我们会尽快通过邮箱或电话与您联系。') }}</span></p>
+            <p v-if="inquirySubmitError" class="quick-inquiry__error" role="alert"><Icon name="lucide:triangle-alert" />{{ inquirySubmitError }}</p>
+            <small class="quick-inquiry__privacy"><Icon name="lucide:lock-keyhole" />{{ language === 'en' ? contactContent.inquiry.privacyEn : contactContent.inquiry.privacyZh }}</small>
           </form>
           <section class="catalogue-service-points" :aria-label="t('服务支持')">
             <div>
