@@ -238,29 +238,31 @@
 
 .site-shell .site-foot { background: #eaf2ed; color: var(--ink); border-top: 1px solid var(--line); }
 
-/* ---- 页脚主体：左侧品牌区 + 右侧 5 列栏目 ---- */
-.site-shell .site-foot__main { width: var(--wrap); margin: 0 auto; padding: 3.4rem 0 2.8rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr); gap: 3rem; align-items: start; }
+/* ---- 页脚主体：左侧品牌区 + 右侧 5 列栏目 ----
+   页脚单独使用比正文更窄的宽度（--foot-wrap），避免栏目在宽屏上被摊得过开。 */
+.site-shell .site-foot { --foot-wrap: min(1180px, calc(100vw - 96px)); }
+.site-shell .site-foot__main { width: var(--foot-wrap); margin: 0 auto; padding: 3.2rem 0 2.6rem; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 3fr); gap: 3rem; align-items: start; }
 
 .site-shell .site-foot__brand { display: grid; justify-items: start; gap: .3rem; }
-.site-shell .site-foot__name { color: var(--ink); font-family: var(--serif); font-size: 1.85rem; font-weight: 700; line-height: 1.2; letter-spacing: .02em; }
-.site-shell .site-foot__name-en { color: var(--muted); font-size: .6rem; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
-.site-shell .site-foot__rule { width: 3.4rem; height: 2px; margin: .85rem 0 1rem; background: var(--red); }
-.site-shell .site-foot__tagline { margin: 0; color: var(--ink); font-size: .78rem; font-weight: 600; line-height: 1.65; }
-.site-shell .site-foot__tagline small { display: inline-block; margin-top: .2rem; color: var(--muted); font-size: .55rem; font-weight: 500; letter-spacing: .12em; }
-.site-shell .site-foot__slogan { margin: 1.15rem 0 0; color: var(--muted); font-family: var(--serif); font-size: .95rem; line-height: 1.7; }
+.site-shell .site-foot__name { color: var(--ink); font-family: var(--serif); font-size: 2rem; font-weight: 700; line-height: 1.2; letter-spacing: .02em; }
+.site-shell .site-foot__name-en { color: var(--muted); font-size: .66rem; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
+.site-shell .site-foot__rule { width: 3.4rem; height: 2px; margin: .9rem 0 1.05rem; background: var(--red); }
+.site-shell .site-foot__tagline { margin: 0; color: var(--ink); font-size: .9rem; font-weight: 600; line-height: 1.65; }
+.site-shell .site-foot__tagline small { display: inline-block; margin-top: .24rem; color: var(--muted); font-size: .62rem; font-weight: 500; letter-spacing: .12em; }
+.site-shell .site-foot__slogan { margin: 1.2rem 0 0; color: var(--muted); font-family: var(--serif); font-size: 1.05rem; line-height: 1.7; }
 
-.site-shell .site-foot__columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.5rem; }
-.site-shell .site-foot__column { display: grid; gap: .75rem; align-content: start; min-width: 0; }
-.site-shell .site-foot__column-title { color: var(--ink); font-size: .78rem; font-weight: 700; text-decoration: none; }
+.site-shell .site-foot__columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.75rem; }
+.site-shell .site-foot__column { display: grid; gap: .85rem; align-content: start; min-width: 0; }
+.site-shell .site-foot__column-title { color: var(--ink); font-size: .9rem; font-weight: 700; text-decoration: none; }
 .site-shell .site-foot__column-title:hover { color: var(--red); }
-.site-shell .site-foot__column ul { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
-.site-shell .site-foot__column li a { color: var(--muted); font-size: .72rem; line-height: 1.5; text-decoration: none; transition: color .2s ease; }
+.site-shell .site-foot__column ul { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
+.site-shell .site-foot__column li a { color: var(--muted); font-size: .82rem; line-height: 1.55; text-decoration: none; transition: color .2s ease; }
 .site-shell .site-foot__column li a:hover { color: var(--red); }
 
-/* ---- 底部色带：版权 + 备案 ---- */
+/* ---- 底部色带：版权 + 备案。内容仅一行，故留白从紧。 */
 .site-shell .site-foot__legal { background: var(--ink); color: rgba(255,255,255,.62); }
-.site-shell .site-foot__legal-inner { width: var(--wrap); margin: 0 auto; padding: 1.15rem 0 5.5rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .35rem 1.1rem; text-align: center; }
-.site-shell .site-foot__legal p { margin: 0; font-size: .68rem; line-height: 1.7; }
+.site-shell .site-foot__legal-inner { width: var(--foot-wrap); margin: 0 auto; padding: .95rem 0 3.4rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .3rem 1.1rem; text-align: center; }
+.site-shell .site-foot__legal p { margin: 0; font-size: .74rem; line-height: 1.7; }
 .site-shell .site-foot__legal-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .35rem .7rem; }
 .site-shell .site-foot__legal a { color: rgba(255,255,255,.62); text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease; }
 .site-shell .site-foot__legal a:is(:hover,:focus-visible) { color: #fff; border-bottom-color: currentColor; }
@@ -268,14 +270,16 @@
 .site-shell .site-foot__legal-pending { color: rgba(255,255,255,.42); }
 
 @media (max-width: 1120px) {
-  .site-shell .site-foot__main { grid-template-columns: 1fr; gap: 2.4rem; padding: 2.8rem 0 2.2rem; }
+  .site-shell .site-foot__main { grid-template-columns: 1fr; gap: 2.2rem; padding: 2.6rem 0 2rem; }
   .site-shell .site-foot__columns { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem 1.4rem; }
 }
 @media (max-width: 680px) {
-  .site-shell .site-foot__main { padding: 2.2rem 0 1.8rem; gap: 2rem; }
-  .site-shell .site-foot__name { font-size: 1.5rem; }
+  .site-shell .site-foot { --foot-wrap: calc(100vw - 40px); }
+  .site-shell .site-foot__main { padding: 2rem 0 1.6rem; gap: 1.8rem; }
+  .site-shell .site-foot__name { font-size: 1.65rem; }
   .site-shell .site-foot__columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.3rem 1.1rem; }
-  .site-shell .site-foot__legal-inner { flex-direction: column; gap: .3rem; padding: 1rem 0 9rem; }
+  .site-shell .site-foot__legal-inner { flex-direction: column; gap: .3rem; padding: 1rem 0 8.5rem; }
+  .site-shell .site-foot__legal p { font-size: .7rem; }
   .site-shell .site-foot__legal-sep { display: none; }
 }
 

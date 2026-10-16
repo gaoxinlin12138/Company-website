@@ -135,7 +135,8 @@ onBeforeUnmount(() => {
 .contact-dock {
   position: fixed;
   right: 1.35rem;
-  bottom: clamp(4.5rem, 10vh, 7rem);
+  /* 贴近页面底部：页脚备案色带据此预留底部留白，两者需一起调整 */
+  bottom: clamp(3.2rem, 5.5vh, 4.4rem);
   z-index: 48;
   display: grid;
   justify-items: end;
@@ -388,7 +389,7 @@ onBeforeUnmount(() => {
 @media (max-width: 600px) {
   .contact-dock {
     right: max(.75rem, env(safe-area-inset-right));
-    bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 4.5rem));
+    bottom: max(3.4rem, calc(env(safe-area-inset-bottom) + 3.4rem));
   }
 
   .contact-dock__trigger {

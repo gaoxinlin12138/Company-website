@@ -280,9 +280,13 @@ COPYRIGHT © 2026 红财万富（温州）科技有限公司
 2. 把代码加到 `SiteFooter.vue` 的 `.site-foot__legal` 区块内
 3. **图标必须使用官方提供的，不可自行绘制或改色**
 
-**布局注意事项**：右下角 `contact-dock`（Contact us 按钮）是固定定位，最高约占
-页面底部 150px。`.site-foot__legal-inner` 因此保留了较大的 `padding-bottom`
-（桌面 5.5rem、移动端 9rem）；调整该按钮位置或尺寸时需一并复核，避免遮挡备案号。
+**布局注意事项**：页脚单独使用比正文更窄的宽度（`--foot-wrap`，桌面 1180px、
+移动端 `100vw - 40px`），避免栏目在宽屏上被摊得过开。
+
+右下角 `contact-dock`（Contact us 按钮）是固定定位，与页脚色带底部留白相互配合：
+`.site-foot__legal-inner` 的 `padding-bottom`（桌面 3.4rem、移动端 8.5rem）正是为
+避让它而留。**调整该按钮的 `bottom` 或尺寸时，需一并复核页脚留白**，否则会遮挡
+备案号。
 
 ### 页面文案存了两份，改完要同步
 
