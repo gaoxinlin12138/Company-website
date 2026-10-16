@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { footerMenuColumns } from '~/data/site'
 
 const { language, t } = useSiteLanguage()
 
@@ -15,30 +15,45 @@ const icpNumber = '浙ICP备2026018014号-2'
 const companyName = '红财万富（温州）科技有限公司'
 const icpUrl = 'https://beian.miit.gov.cn/'
 const copyrightYear = computed(() => new Date().getFullYear())
+
+// 与顶部导航同源（data/site.ts），改一处两处同时生效
+const columns = footerMenuColumns
 </script>
 
 <template>
   <footer class="site-foot">
-    <div class="site-foot__inner">
+    <div class="site-foot__main">
       <div class="site-foot__brand">
-        <img src="/assets/images/logo-transparent.png" width="702" height="180" :alt="language === 'en' ? 'Hongcai Wanfu' : '红财万富 HONGCAI WANFU'">
-        <span>{{ t('全球卫浴五金合作伙伴') }}<br><small>GLOBAL BATHROOM &amp; HARDWARE PARTNER</small></span>
+        <span class="site-foot__name">红财万富</span>
+        <span class="site-foot__name-en">HONGCAI WANFU</span>
+        <span class="site-foot__rule" aria-hidden="true"></span>
+        <p class="site-foot__tagline">{{ t('全球卫浴五金合作伙伴') }}<br><small>GLOBAL BATHROOM &amp; HARDWARE PARTNER</small></p>
+        <p class="site-foot__slogan">{{ t('让更好的卫浴') }}<br>{{ t('走向更广阔的世界') }}</p>
       </div>
-      <nav :aria-label="t('页脚导航')">
-        <NuxtLink to="/">{{ t('首页') }}</NuxtLink>
-        <NuxtLink to="/products">{{ t('产品中心') }}</NuxtLink>
-        <NuxtLink to="/about">{{ t('关于我们') }}</NuxtLink>
-        <NuxtLink to="/news">{{ t('新闻动态') }}</NuxtLink>
-        <NuxtLink to="/cases">{{ t('案例展示') }}</NuxtLink>
-        <NuxtLink to="/contact">{{ t('联系我们') }}</NuxtLink>
+
+      <nav class="site-foot__columns" :aria-label="t('页脚导航')" data-foot-columns>
+        <div v-for="column in columns" :key="column.to" class="site-foot__column" data-foot-column>
+          <NuxtLink class="site-foot__column-title" :to="column.to">{{ t(column.label) }}</NuxtLink>
+          <ul>
+            <li v-for="item in column.items()" :key="`${column.to}-${item.label}`">
+              <NuxtLink :to="item.to">{{ t(item.label) }}</NuxtLink>
+            </li>
+          </ul>
+        </div>
       </nav>
-      <p>{{ t('让更好的卫浴') }}<br>{{ t('走向更广阔的世界') }}</p>
     </div>
-    <!-- 备案与版权信息：固定显示，不受中英文切换影响（备案信息为中文法定公示内容） -->
+
+    <!-- 备案与版权信息：固定显示，不随中英文切换（备案为中文法定公示内容） -->
     <div class="site-foot__legal">
-      <span class="site-foot__legal-copy">COPYRIGHT © {{ copyrightYear }} {{ companyName }}</span>
-      <span class="site-foot__legal-sep" aria-hidden="true">|</span>
-      <a :href="icpUrl" target="_blank" rel="noopener nofollow">{{ icpNumber }}</a>
+      <div class="site-foot__legal-inner">
+        <p class="site-foot__legal-copy">COPYRIGHT © {{ copyrightYear }} {{ companyName }}</p>
+        <p class="site-foot__legal-links">
+          <a :href="icpUrl" target="_blank" rel="noopener nofollow">{{ icpNumber }}</a>
+          <span class="site-foot__legal-sep" aria-hidden="true">|</span>
+          <!-- 公安备案通过后，用官方生成的编号与图标替换此处 -->
+          <span class="site-foot__legal-pending">公安备案办理中</span>
+        </p>
+      </div>
     </div>
   </footer>
 </template>

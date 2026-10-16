@@ -216,7 +216,8 @@ export const defaultContactContent = {
   },
   inquiry: {
     introZh: '请填写以下信息，让我们更好地了解您的需求。', introEn: 'Please share a few details so we can understand your sourcing needs.',
-    privacyZh: '我们会妥善保管您的信息，仅用于商务沟通。', privacyEn: 'Your information is kept securely and used only for business communication.'
+    privacyZh: '您提交的姓名、公司与联系方式仅用于本次商务沟通，我们不会向第三方提供。如需删除或更正，请通过下方联系方式告知我们。',
+    privacyEn: 'The name, company and contact details you submit are used only to respond to this enquiry and are never shared with third parties. Contact us if you would like them removed or corrected.'
   }
 }
 

@@ -240,12 +240,31 @@ grep -n -E '^[A-Z]' .env | sed 's/=.*/=<已填写>/' | cat -A
 注意：`nuxt build` 只在**构建时**读取 `.env`。修改 `.env` 后必须重新构建才生效，
 仅重启进程不够。
 
+### 页脚结构
+
+页脚由 `components/SiteFooter.vue` 渲染，分为两部分：
+
+1. **上方**：左侧品牌区（品牌名、两段标语），右侧 5 列栏目导航
+2. **下方深色色带**：版权声明 + ICP 备案号 + 公安备案位
+
+**栏目的内容与顶部导航同源**，都定义在 `data/site.ts`：
+
+| 定义 | 用途 |
+| --- | --- |
+| `productCategorySections` | 产品分类（顶栏下拉与页脚"产品中心"列都从这里展开） |
+| `footerMenuColumns` | 页脚 5 列（产品中心 / 关于我们 / 新闻动态 / 案例展示 / 联系我们） |
+| `menuItemsByRoute` | 顶栏下拉，由 `footerMenuColumns` 派生 |
+
+因此**新增一个产品分类只需改 `productCategorySections` 一处**，顶栏下拉与页脚
+会同时更新，不需要改两遍。
+
 ### 备案与版权信息
 
 网站底部固定显示 ICP 备案号与版权声明，内容硬编码在 `components/SiteFooter.vue`：
 
 ```
-COPYRIGHT © 2026 红财万富（温州）科技有限公司 | 浙ICP备2026018014号-2
+COPYRIGHT © 2026 红财万富（温州）科技有限公司
+浙ICP备2026018014号-2 | 公安备案办理中
 ```
 
 **为什么硬编码**：备案信息属于法定公示内容且极少变动，放在代码里可避免被误改。
@@ -255,15 +274,40 @@ COPYRIGHT © 2026 红财万富（温州）科技有限公司 | 浙ICP备20260180
 **ICP 备案号**必须链接到工信部备案系统（`https://beian.miit.gov.cn/`），
 这是备案义务的一部分。变更域名或主体后需同步更新此处。
 
-**公安备案通过后**需要在同一位置补充公安备案编号与官方图标：
+**公安备案通过后**需要替换色带里的"公安备案办理中"占位文字：
 
 1. 登录 `beian.mps.gov.cn`，系统会生成一段带图标的现成代码
 2. 把代码加到 `SiteFooter.vue` 的 `.site-foot__legal` 区块内
 3. **图标必须使用官方提供的，不可自行绘制或改色**
 
 **布局注意事项**：右下角 `contact-dock`（Contact us 按钮）是固定定位，最高约占
-页面底部 150px。`.site-foot__legal` 因此保留了较大的 `padding-bottom`（桌面
-5.5rem、移动端 9rem）；调整该按钮位置或尺寸时需一并复核，避免遮挡备案号。
+页面底部 150px。`.site-foot__legal-inner` 因此保留了较大的 `padding-bottom`
+（桌面 5.5rem、移动端 9rem）；调整该按钮位置或尺寸时需一并复核，避免遮挡备案号。
+
+### 页面文案存了两份，改完要同步
+
+关于我们、联系方式、询价表单等文案在 `site_settings` 表里存了一份，代码里
+（`data/site-content.ts`）另有一份作为兜底。**前台优先读数据库**，所以只改代码
+往往看不到变化。
+
+改文案的完整流程：
+
+1. 改 `data/site-content.ts` 里的默认值（保证全新部署与数据库缺项时也正确）
+2. 用脚本同步数据库里已有的值：
+
+```bash
+node scripts/patch-site-text.mjs            # 预览改动前后对比
+node scripts/patch-site-text.mjs --apply    # 写入
+```
+
+脚本只替换指定字段，其余内容原样保留，并在写入前校验 JSON 合法性。
+也可临时指定字段：
+
+```bash
+node scripts/patch-site-text.mjs --apply --key contact --set inquiry.privacyZh='新文案'
+```
+
+若提示找不到数据库连接，加 `--url "$DBURL"`（取法见"代码更新方式"一节）。
 
 ### 上线检查清单
 

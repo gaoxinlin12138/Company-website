@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { navigation, productCategorySections } from '~/data/site'
+import { menuItemsByRoute, navigation } from '~/data/site'
 import { NEWS_CATEGORIES, sampleNewsArticles } from '~/data/news'
 import { caseStudies } from '~/data/case-studies'
 
@@ -94,61 +94,10 @@ const languageOptions = [
   { code: 'en' as const, label: 'English', nativeLabel: 'EN' }
 ]
 
-const productCategories = computed(() => productCategorySections.flatMap(section => section.categories.map(category => ({
-  category,
-  group: section.group,
-  count: (managedSearchProducts.value || []).filter(item => item.category === category).length
-}))))
-
-const navigationMenus = computed(() => ({
-  '/products': {
-    heading: '',
-    meta: '',
-    items: productCategories.value.map(item => ({
-      label: item.category,
-      to: { path: '/products', query: { group: item.group, category: item.category } }
-    }))
-  },
-  '/about': {
-    heading: '',
-    meta: '',
-    items: [
-      { label: '公司简介', to: '/about#company-profile' },
-      { label: '品牌文化', to: '/about#brand-culture' },
-      { label: '荣誉资质', to: '/about#qualifications' },
-      { label: '企业 VI', to: '/about#brand-vi' }
-    ]
-  },
-  '/news': {
-    heading: '',
-    meta: '',
-    items: NEWS_CATEGORIES.map(category => ({
-      label: category,
-      to: { path: '/news', query: { category } }
-    }))
-  },
-  '/cases': {
-    heading: '',
-    meta: '',
-    items: ['全部案例', '客户案例', '项目案例', '落地效果'].map(category => ({
-      label: category,
-      to: { path: '/cases', query: { category } }
-    }))
-  },
-  '/contact': {
-    heading: '',
-    meta: '',
-    items: [
-      { label: '联系方式', to: '/contact#contact-info' },
-      { label: '地理位置', to: '/contact#location' },
-      { label: '提交采购需求', to: '/contact#inquiry' }
-    ]
-  }
-}))
 
 const navigationItems = computed(() => navigation.slice(1).map(item => ({
   ...item,
-  menu: navigationMenus.value[item.to as keyof typeof navigationMenus.value]
+  menu: { items: menuItemsByRoute[item.to] || [] }
 })))
 
 const searchItems = computed<SearchItem[]>(() => {
@@ -343,14 +292,10 @@ watch(() => route.fullPath, () => {
           <div
             v-if="item.menu.items.length"
             :id="`${item.to.slice(1)}-navigation-dropdown`"
-            class="product-dropdown"
-            :class="{ 'is-open': activeDropdown === item.to, 'product-dropdown--compact': !item.menu.heading }"
+            class="product-dropdown product-dropdown--compact"
+            :class="{ 'is-open': activeDropdown === item.to }"
             :aria-hidden="activeDropdown !== item.to"
           >
-            <div v-if="item.menu.heading" class="product-dropdown__heading">
-              <strong>{{ t(item.menu.heading) }}</strong>
-              <small>{{ item.menu.meta }}</small>
-            </div>
             <NuxtLink
               v-for="menuItem in item.menu.items"
               :key="menuItem.label"
