@@ -163,7 +163,7 @@ pnpm build
 | 类别 | 位置 | 是否入库 git |
 | --- | --- | --- |
 | 网站自带的演示图片（案例配图、关于我们配图等） | `public/assets/images/` | ✅ 入库 |
-| 后台后传的图片与 PDF | `public/uploads/` → 软链接到 `/www/wwwroot/data` | ❌ 不入库 |
+| 后台后传的图片与 PDF | `public/uploads/` → 软链接到 `/www/data/hcwf/uploads` | ❌ 不入库 |
 
 `public/uploads/` 下只保留 `.gitkeep` 占位，用来确保目录存在。**不要把上传文件提交
 到 git**——这正是让 `public/uploads` 能安全地做成软链接的前提。
@@ -211,7 +211,7 @@ rm -rf .output .nuxt && pnpm build
 | 内容 | 位置 | 说明 |
 | --- | --- | --- |
 | 环境变量 | 项目根目录 `.env` | 一行一个变量，`KEY=value`，等号两边不能有空格 |
-| 上传的图片 | `/www/wwwroot/data`（项目外） | 通过 `public/uploads` 软链接接入，重新部署不受影响 |
+| 上传的图片 | `/www/data/hcwf/uploads`（项目外） | 通过 `public/uploads` 软链接接入，重新部署不受影响 |
 | 数据库 | 本机 MySQL 的 `hongcai_wanfu` | 分类、内容、询价、管理员均在此 |
 | 构建产物 | `.output/` | 由 `pnpm build` 生成，可直接删除重建 |
 
@@ -239,6 +239,52 @@ grep -n -E '^[A-Z]' .env | sed 's/=.*/=<已填写>/' | cat -A
 
 注意：`nuxt build` 只在**构建时**读取 `.env`。修改 `.env` 后必须重新构建才生效，
 仅重启进程不够。
+
+### nginx 配置里的几个坑
+
+站点配置位于 `/www/server/panel/vhost/nginx/node_hongcai_wanfu.conf`，
+改前务必先 `cp` 备份，改完先 `nginx -t` 再 `nginx -s reload`。
+
+**1. `add_header` 不会继承**
+
+nginx 的 `add_header` **不是累加**：`location` 里只要写了一条 `add_header`，
+`server` 级的全部失效。本项目曾因此在 `location /` 里放了
+`add_header X-Cache ...`，把 server 级的 **HSTS 和 Alt-Svc（HTTP/3）** 全盖掉，
+表现为「配置里明明有 HSTS，浏览器却收不到」。
+
+排查方式：
+
+```bash
+curl -sI https://你的域名/ | grep -iE 'strict-transport|alt-svc'
+```
+
+`location` 里应避免再写 `add_header`，否则需把 HSTS 一并补上。
+
+**2. `X-Forwarded-For` 必须覆盖，不能追加**
+
+`$proxy_add_x_forwarded_for` 是**追加**，客户端自带的伪造值会排在首位。
+应用侧若取第一个值做限流，攻击者换着伪造 IP 就能无限试密码。
+
+正确写法（只写真实来源）：
+
+```nginx
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $remote_addr;
+```
+
+应用侧（`server/api/admin/auth/login.post.ts`）也做了配套加固：优先读
+`X-Real-IP`，其次取 `X-Forwarded-For` 的**最后一段**，因此即使 nginx 配置被
+宝塔重置回「追加」写法，限流依然无法被绕过。
+
+**3. TLS 版本**
+
+应保持 `ssl_protocols TLSv1.2 TLSv1.3;`。TLS 1.1 已被主流浏览器弃用且不安全，
+不要在 `ssl_protocols` 中保留它。
+
+**4. 宝塔会覆盖这个文件**
+
+在面板里开关「强制 HTTPS」、改域名、续签证书时，宝塔可能重新生成该配置，
+上述手工改动会丢失。改完请用 `grep` 复核，并重新执行第 1、2 条的验证命令。
 
 ### 页脚结构
 
@@ -324,7 +370,7 @@ node scripts/patch-site-text.mjs --apply --key contact --set inquiry.privacyZh='
 - [ ] 底部 ICP 备案号与公司全称正确，且备案号链接可跳转到工信部备案系统
 - [ ] 公安备案通过后，其编号与官方图标已补充到页面底部
 - [ ] `public/uploads` 软链接指向正确，且 `data` 目录有独立备份
-- [ ] MySQL 与 `/www/wwwroot/data` 均已备份，且至少一份不在本机
+- [ ] MySQL 与 `/www/data/hcwf/uploads` 均已备份，且至少一份不在本机
 - [ ] 阿里云安全组仅开放 80/443，未对公网开放 3306 与 Node 内部端口
 
 
@@ -334,11 +380,11 @@ node scripts/patch-site-text.mjs --apply --key contact --set inquiry.privacyZh='
 | --- | --- | --- |
 | 产品、新闻、案例、轮播、询价 | MySQL | 对应菜单 |
 | 关于我们、联系方式、社交、产品图册 | MySQL `site_settings` | 关于我们 / 联系我们 / 社交联系 |
-| 上传的图片与 PDF | `/www/wwwroot/data` | 各编辑页上传 |
+| 上传的图片与 PDF | `/www/data/hcwf/uploads` | 各编辑页上传 |
 | 管理员账号 | MySQL `admin_users` | 无界面，用 `scripts/reset-admin.mjs` |
 
 删除产品时会尝试删除对应图片，但仅在**该图片未被其他内容引用**时才真正删除
 （代码会扫描全库文本字段判断）。删除文章与案例不会清理其封面图，长期使用后
-可在 `/www/wwwroot/data` 中人工清理不再引用的文件。
+可在 `/www/data/hcwf/uploads` 中人工清理不再引用的文件。
 
 
