@@ -235,9 +235,11 @@ html[lang="zh-CN"] .language-menu__dropdown button[data-language="zh"], html[lan
 .catalogue__results { min-width: 0; scroll-margin-top: 96px; }
 .product-list--centre { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; padding-top: 0; align-items: start; }
 .product-list--centre .product-tile { border: 1px solid rgba(14,27,33,.1); background: var(--white); }
-.product-list--centre .product-tile__image { aspect-ratio: 1.24; background: linear-gradient(135deg, #f1f2f0, #e0e5e2); }
-.product-list--centre .product-tile__image { display: grid; place-items: center; min-height: 280px; height: clamp(280px, 28vw, 390px); aspect-ratio: auto; overflow: hidden; padding: 0; border-radius: 0; }
-.product-list--centre .product-tile__image img { width: 100% !important; height: 100% !important; max-width: none; max-height: none; object-fit: contain !important; object-position: center; filter: saturate(.72); }
+/* 图片区固定 3:4。图片用绝对定位锁在框内：
+   若用 display:grid，图片会按原始比例把栅格行撑高（例如 1:3 的竖图撑到 576px），
+   height:100% 失效，再被 overflow 裁掉，只剩中间一条。 */
+.product-list--centre .product-tile__image { position: relative; aspect-ratio: 3 / 4; min-height: 0; height: auto; overflow: hidden; padding: 0; border-radius: 0; background: linear-gradient(135deg, #f1f2f0, #e0e5e2); }
+.product-list--centre .product-tile__image img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-width: none; max-height: none; object-fit: contain !important; object-position: center; filter: saturate(.72); }
 .product-list--centre .product-tile__image img[src*="/uploads/products/"] { mix-blend-mode: multiply; }
 .product-list--centre .product-tile:hover .product-tile__image img { transform: none; }
 .product-tile__body { padding: .78rem .78rem .8rem; }
